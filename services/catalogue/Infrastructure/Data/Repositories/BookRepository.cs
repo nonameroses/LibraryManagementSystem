@@ -1,9 +1,11 @@
 ﻿using Domain.Entities;
 using Microsoft.Extensions.Options;
-using 
+using MongoDB.Driver;
+using MongoDB.Driver.Linq;
+
 namespace Infrastructure.Data.Repositories;
 
-public class BookRepository : MongoRepository<Book, Guid>
+public class BookRepository : MongoRepository<Book, Guid>, IBookRepository
 {
     private readonly IMongoDbContext _dbContext;
     public BookRepository(IMongoDbContext context, IOptions<MongoDbOptions> options) : base(context, options)
@@ -11,9 +13,13 @@ public class BookRepository : MongoRepository<Book, Guid>
         _dbContext = context;
     }
 
-    public async void GetBooksAsync<BookDto>(CancellationToken cancellationToken)
+    public async Task<List<Book>> GetBooksAsync<BookDto>(CancellationToken cancellationToken)
     {
+        var queryable = _dbContext.GetCollection<Book>().AsQueryable();
 
+        queryable = queryable.OrderBy(b => b.CreatedAt);
+
+        return queryable.ToList();
     }
     //{
     //public async Task<BookDto> GetBooksAsync<BookDto>(BookParametersDto parameters, CancellationToken cancellationToken)
