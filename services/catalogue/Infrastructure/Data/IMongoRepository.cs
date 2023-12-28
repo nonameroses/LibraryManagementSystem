@@ -3,19 +3,22 @@ using System.Linq.Expressions;
 
 namespace Infrastructure.Data
 {
-    public interface IMongoRepository<TDocument> where TDocument : IDocument
+    public interface IMongoRepository<TDocument, TId> where TDocument : IDocument
     {
-        IQueryable<TDocument> AsQueryable();
-        Task DeleteByIdAsync(string id);
-        void DeleteMany(Expression<Func<TDocument, bool>> filterExpression);
-        Task DeleteManyAsync(Expression<Func<TDocument, bool>> filterExpression);
-        Task DeleteOneAsync(Expression<Func<TDocument, bool>> filterExpression);
-        IEnumerable<TDocument> FilterBy(Expression<Func<TDocument, bool>> filterExpression);
-        IEnumerable<TProjected> FilterBy<TProjected>(Expression<Func<TDocument, bool>> filterExpression, Expression<Func<TDocument, TProjected>> projectionExpression);
-        Task<TDocument> FindByIdAsync(string id);
-        Task<TDocument> FindOneAsync(Expression<Func<TDocument, bool>> filterExpression);
-        Task InsertManyAsync(ICollection<TDocument> documents);
-        Task InsertOneAsync(TDocument document);
-        Task ReplaceOneAsync(TDocument document);
+        Task<TDocument?> FindByIdAsync(TId id, CancellationToken cancellationToken = default);
+
+        Task<TDocument?> FindOneAsync(Expression<Func<TDocument, bool>> predicate, CancellationToken cancellationToken = default);
+
+        Task<IReadOnlyList<TDocument>> FindAsync(Expression<Func<TDocument, bool>> predicate, CancellationToken cancellationToken = default);
+
+        Task<IReadOnlyList<TDocument>> GetAllAsync(CancellationToken cancellationToken = default);
+        Task<bool> ExistsAsync(Expression<Func<TDocument, bool>> predicate, CancellationToken cancellationToken = default);
+
+        Task AddAsync(TDocument entity, CancellationToken cancellationToken = default);
+        Task UpdateAsync(TDocument entity, CancellationToken cancellationToken = default);
+        Task DeleteRangeAsync(IReadOnlyList<TDocument> entities, CancellationToken cancellationToken = default);
+        Task DeleteAsync(Expression<Func<TDocument, bool>> predicate, CancellationToken cancellationToken = default);
+        Task DeleteAsync(TDocument entity, CancellationToken cancellationToken = default);
+        Task DeleteByIdAsync(TId id, CancellationToken cancellationToken = default);
     }
 }

@@ -7,18 +7,12 @@ using System.Linq.Expressions;
 
 namespace Infrastructure.Data;
 
-public class MongoRepository<TDocument> : IMongoRepository<TDocument> where TDocument : IDocument
+public class MongoRepository<TDocument, TId> : IMongoRepository<TDocument, TId> where TDocument : IDocument
 {
     private readonly IMongoCollection<TDocument> _collection;
     private readonly IMongoDbContext _context;
 
-    public MongoRepository(MongoDbOptions settings)
-    {
-
-
-    }
-
-    public MongoRepository(IMongoDbContext context, IOptions<MongoDbOptions> options)
+   public MongoRepository(IMongoDbContext context, IOptions<MongoDbOptions> options)
     {
         MongoClient client = new MongoClient(options.Value.ConnectionString);
         IMongoDatabase database = client.GetDatabase(options.Value.DatabaseName);
@@ -64,47 +58,58 @@ public class MongoRepository<TDocument> : IMongoRepository<TDocument> where TDoc
     }
 
 
-    public virtual Task InsertOneAsync(TDocument document)
+    public async Task<bool> ExistsAsync(Expression<Func<TDocument, bool>> predicate, CancellationToken cancellationToken = default)
     {
-        return Task.Run(() => _collection.InsertOneAsync(document));
+        return await _collection.Find(predicate).AnyAsync(cancellationToken: cancellationToken)!;
     }
 
-
-    public virtual async Task InsertManyAsync(ICollection<TDocument> documents)
+    public async Task<IReadOnlyList<TDocument>> FindAsync(Expression<Func<TDocument, bool>> predicate, CancellationToken cancellationToken = default)
     {
-        await _collection.InsertManyAsync(documents);
+        return await _collection.Find(predicate).ToListAsync(cancellationToken: cancellationToken)!;
     }
 
-    public virtual async Task ReplaceOneAsync(TDocument document)
+    public Task<TDocument?> FindOneAsync(Expression<Func<TDocument, bool>> predicate, CancellationToken cancellationToken = default)
     {
-        var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, document.Id);
-        await _collection.FindOneAndReplaceAsync(filter, document);
+        return _collection.Find(predicate).SingleOrDefaultAsync(cancellationToken: cancellationToken)!;
     }
 
-
-    public Task DeleteOneAsync(Expression<Func<TDocument, bool>> filterExpression)
+    public Task<TDocument?> FindByIdAsync(TId id, CancellationToken cancellationToken = default)
     {
-        return Task.Run(() => _collection.FindOneAndDeleteAsync(filterExpression));
+        return FindOneAsync(e => e.Id!.Equals(id), cancellationToken);
     }
 
-    public Task DeleteByIdAsync(string id)
+    public async Task<IReadOnlyList<TDocument>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return Task.Run(() =>
-        {
-            var objectId = new ObjectId(id);
-            var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, objectId);
-            _collection.FindOneAndDeleteAsync(filter);
-        });
+        return await _collection.AsQueryable().ToListAsync(cancellationToken);
     }
 
-    public void DeleteMany(Expression<Func<TDocument, bool>> filterExpression)
+    public async Task AddAsync(TDocument document, CancellationToken cancellationToken = default)
     {
-        _collection.DeleteMany(filterExpression);
+        await _collection.InsertOneAsync(document, new InsertOneOptions(), cancellationToken);
     }
 
-    public async Task DeleteManyAsync(Expression<Func<TDocument, bool>> filterExpression)
+    public async Task UpdateAsync(TDocument entity, CancellationToken cancellationToken = default)
     {
-        await Task.Run(() => _collection.DeleteManyAsync(filterExpression));
-        return;
+        await _collection.ReplaceOneAsync(x => x.Id!.Equals(entity.Id), entity, cancellationToken: cancellationToken);
+    }
+
+    public Task DeleteRangeAsync(IReadOnlyList<TDocument> entities, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task DeleteAsync(Expression<Func<TDocument, bool>> predicate, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task DeleteAsync(TDocument entity, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task DeleteByIdAsync(TId id, CancellationToken cancellationToken = default)
+    {
+        await _collection.DeleteOneAsync(d => d.Id!.Equals(id), cancellationToken);
     }
 }
