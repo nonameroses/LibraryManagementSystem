@@ -9,7 +9,7 @@ public class MongoDbContext : IMongoDbContext
     public IMongoDatabase Database { get; }
     public IMongoClient MongoClient { get; }
 
-    public MongoDbContext(IOptions<MongoDbOptions> options)
+    public MongoDbContext(IOptions<MongoOptions> options)
     {
         MongoClient = new MongoClient(options.Value.ConnectionString);
         Database = MongoClient.GetDatabase(options.Value.DatabaseName);
@@ -20,5 +20,8 @@ public class MongoDbContext : IMongoDbContext
     {
         return Database.GetCollection<T>(name ?? typeof(T).Name.ToLower());
     }
-
+    public void Dispose()
+    {
+        GC.SuppressFinalize(this);
+    }
 }

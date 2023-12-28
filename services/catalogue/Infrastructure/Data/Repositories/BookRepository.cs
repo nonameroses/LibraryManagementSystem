@@ -8,7 +8,7 @@ namespace Infrastructure.Data.Repositories;
 public class BookRepository : MongoRepository<Book, Guid>, IBookRepository
 {
     private readonly IMongoDbContext _dbContext;
-    public BookRepository(IMongoDbContext context, IOptions<MongoDbOptions> options) : base(context, options)
+    public BookRepository(IMongoDbContext context, IOptions<MongoOptions> options) : base(context, options)
     {
         _dbContext = context;
     }

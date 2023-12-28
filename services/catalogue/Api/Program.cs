@@ -17,9 +17,9 @@ var typeAdapterConfig = TypeAdapterConfig.GlobalSettings;
 
 //builder.Services.AddMapster
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
-//builder.Services.AddSingleton<IMongoDbOptions>(serviceProvider =>
-//    serviceProvider.GetRequiredService<IOptions<MongoDbOptions>>().Value);
-builder.Services.Configure<MongoDbOptions>(builder.Configuration.GetSection("MongoDB"));
+//builder.Services.AddSingleton<IMongoOptions>(serviceProvider =>
+//    serviceProvider.GetRequiredService<IOptions<MongoOptions>>().Value);
+builder.Services.Configure<MongoOptions>(builder.Configuration.GetSection("MongoDB"));
 builder.Services.AddSingleton<MongoDbContext>();
 //builder.Services.AddMongoDbContext<MongoDbContext>(builder.Configuration);
 //builder.Services.AddTransient<MongoDbContext>(new MongoDbContext());
@@ -30,10 +30,10 @@ builder.Services.AddTransient(typeof(IMongoRepository<,>), typeof(MongoRepositor
 
 builder.Services.AddTransient<IBookRepository, BookRepository>();
 
-//builder.Services.Configure<MongoDbOptions>(Configuration.GetSection("MongoDbOptions"));
+//builder.Services.Configure<MongoOptions>(Configuration.GetSection("MongoOptions"));
 
-//builder.Services.AddSingleton<MongoDbOptions>(serviceProvider =>
-//    serviceProvider.GetRequiredService<IOptions<MongoDbOptions>>().Value);
+//builder.Services.AddSingleton<MongoOptions>(serviceProvider =>
+//    serviceProvider.GetRequiredService<IOptions<MongoOptions>>().Value);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

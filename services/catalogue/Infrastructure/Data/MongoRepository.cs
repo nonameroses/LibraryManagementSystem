@@ -12,7 +12,7 @@ public class MongoRepository<TDocument, TId> : IMongoRepository<TDocument, TId> 
     private readonly IMongoCollection<TDocument> _collection;
     private readonly IMongoDbContext _context;
 
-   public MongoRepository(IMongoDbContext context, IOptions<MongoDbOptions> options)
+   public MongoRepository(IMongoDbContext context, IOptions<MongoOptions> options)
     {
         //MongoClient client = new MongoClient(options.Value.ConnectionString);
         //IMongoDatabase database = client.GetDatabase(options.Value.DatabaseName);
