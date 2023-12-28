@@ -3,7 +3,7 @@ using static Application.Books.Features.AddBook.AddBook;
 
 namespace Application.Books.Features.AddBook;
 
-public class AddBookValidator : AbstractValidator<AddBookCommand>
-{
+//public class AddBookValidator : AbstractValidator<AddBookCommand>
+//{
 
-}
+//}

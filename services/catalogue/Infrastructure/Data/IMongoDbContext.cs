@@ -1,12 +1,8 @@
 ﻿using MongoDB.Driver;
 
-namespace Infrastructure.Data
-{
-    public interface IMongoDbContext
-    {
-        IMongoDatabase Database { get; }
-        IMongoClient MongoClient { get; }
+namespace Infrastructure.Data;
 
-        IMongoCollection<T> GetCollection<T>(string? name = null);
-    }
+public interface IMongoDbContext
+{
+    IMongoCollection<T> GetCollection<T>(string? name = null);
 }

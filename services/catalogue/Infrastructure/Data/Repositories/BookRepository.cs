@@ -35,4 +35,8 @@ public class BookRepository : MongoRepository<Book, Guid>, IBookRepository
     //    queryable = queryable.OrderBy(p => p.CreatedOn);
     //   // return await queryable.ApplyPagingAsync<Product, ProductDto>(parameters.PageNumber, parameters.PageSize, cancellationToken);
     //}
+    public void Dispose()
+    {
+        throw new NotImplementedException();
+    }
 }

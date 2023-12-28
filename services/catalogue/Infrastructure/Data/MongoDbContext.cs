@@ -12,8 +12,7 @@ public class MongoDbContext : IMongoDbContext
     public MongoDbContext(IOptions<MongoDbOptions> options)
     {
         MongoClient = new MongoClient(options.Value.ConnectionString);
-        string databaseName = options.Value.DatabaseName;
-        Database = MongoClient.GetDatabase(databaseName);
+        Database = MongoClient.GetDatabase(options.Value.DatabaseName);
     }
 
 

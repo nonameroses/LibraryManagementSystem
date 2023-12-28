@@ -14,10 +14,10 @@ public class MongoRepository<TDocument, TId> : IMongoRepository<TDocument, TId> 
 
    public MongoRepository(IMongoDbContext context, IOptions<MongoDbOptions> options)
     {
-        MongoClient client = new MongoClient(options.Value.ConnectionString);
-        IMongoDatabase database = client.GetDatabase(options.Value.DatabaseName);
+        //MongoClient client = new MongoClient(options.Value.ConnectionString);
+        //IMongoDatabase database = client.GetDatabase(options.Value.DatabaseName);
         _context = context;
-        _collection = _context.GetCollection<TDocument>();
+        _collection = _context.GetCollection<TDocument>(options.Value.CollectionName);
 
         //var database = new MongoClient(settings.ConnectionString).GetDatabase(settings.DatabaseName);
         //MongoClient client = new MongoClient(settings.Value.ConnectionString);

@@ -8,17 +8,17 @@ namespace Application.Books.Features.AddBook;
 
 public class AddBook
 {
-    public sealed class AddBookCommand : IRequest<BookDto>
+    public sealed class Command : IRequest<BookDto>
     {
         public readonly BookDto Book;
 
-        public AddBookCommand(BookDto book)
+        public Command(BookDto book)
         {
             Book = book;
         }
     }
 
-    public class AddBookCommandHandler : IRequestHandler<AddBookCommand, BookDto>
+    public class AddBookCommandHandler : IRequestHandler<Command, BookDto>
     {
         //private readonly IMongoRepository<BookDto, Guid> _context;
         private readonly IBookRepository _repository;
@@ -29,7 +29,7 @@ public class AddBook
             _repository = repository;
             _mapper = mapper;
         }
-        public async Task<BookDto> Handle(AddBookCommand request, CancellationToken cancellationToken)
+        public async Task<BookDto> Handle(Command request, CancellationToken cancellationToken)
         {
             var entity = new Book
             {
