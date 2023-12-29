@@ -16,12 +16,12 @@ public class SampleController : ControllerBase
         _peopleRepository = peopleRepository;
     }
 
-    [HttpPost("registerPerson")]
+    [HttpPost("registerBook")]
     public async Task AddPerson(string firstName, string lastName)
     {
         var book = new Book()
         {
-            Author = "John"
+            Author = "Pyder"
         };
 
         await _peopleRepository.InsertOneAsync(book);
