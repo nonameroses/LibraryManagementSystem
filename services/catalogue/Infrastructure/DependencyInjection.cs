@@ -1,12 +1,14 @@
-﻿using Infrastructure.Data.Repositories;
+﻿using Application;
+using Infrastructure.Data.Repositories;
 using Infrastructure.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
+
 namespace Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this WebApplicationBuilder builder)
+    public static void AddInfrastructure(this WebApplicationBuilder builder)
     {
         var applicationAssembly = typeof(CatalogueApplication).Assembly;
         builder.Services.Configure<MongoOptions>(builder.Configuration.GetSection("MongoDB"));
@@ -19,7 +21,7 @@ public static class DependencyInjection
         //    cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
         //});
 
-        return services;
+        //return services;
 
     }
     //public static void UseCatalogInfrastructure(this WebApplication app)
