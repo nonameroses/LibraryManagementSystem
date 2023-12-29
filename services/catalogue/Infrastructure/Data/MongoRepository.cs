@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace Infrastructure.Data;
 
-public class MongoRepository<TDocument, TId> : IMongoRepository<TDocument, TId> where TDocument : IDocument
+public class MongoRepository<TDocument> : IMongoRepository<TDocument> where TDocument : IDocument
 {
     private readonly IMongoCollection<TDocument> _collection;
     private readonly IMongoDbContext _context;
@@ -73,10 +73,7 @@ public class MongoRepository<TDocument, TId> : IMongoRepository<TDocument, TId> 
         return _collection.Find(predicate).SingleOrDefaultAsync(cancellationToken: cancellationToken)!;
     }
 
-    public Task<TDocument?> FindByIdAsync(TId id, CancellationToken cancellationToken = default)
-    {
-        return FindOneAsync(e => e.Id!.Equals(id), cancellationToken);
-    }
+
 
     public async Task<IReadOnlyList<TDocument>> GetAllAsync(CancellationToken cancellationToken = default)
     {
@@ -108,8 +105,5 @@ public class MongoRepository<TDocument, TId> : IMongoRepository<TDocument, TId> 
         throw new NotImplementedException();
     }
 
-    public async Task DeleteByIdAsync(TId id, CancellationToken cancellationToken = default)
-    {
-        await _collection.DeleteOneAsync(d => d.Id!.Equals(id), cancellationToken);
-    }
+
 }

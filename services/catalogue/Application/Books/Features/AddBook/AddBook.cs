@@ -21,12 +21,12 @@ public class AddBook
     public class AddBookCommandHandler : IRequestHandler<Command, BookDto>
     {
         //private readonly IMongoRepository<BookDto, Guid> _context;
-        private readonly IBookRepository _repository;
+      //  private readonly IBookRepository _repository;
         private readonly IMapper _mapper;
 
-        public AddBookCommandHandler(IBookRepository repository, IMapper mapper)
+        public AddBookCommandHandler(IMapper mapper)
         {
-            _repository = repository;
+          //  _repository = repository;
             _mapper = mapper;
         }
         public async Task<BookDto> Handle(Command request, CancellationToken cancellationToken)
@@ -40,7 +40,7 @@ public class AddBook
                 Quantity = request.Book.Quantity
             };
 
-           await _repository.AddAsync(entity);
+           //await _repository.AddAsync(entity);
 
            return _mapper.Map<BookDto>(entity);
         }

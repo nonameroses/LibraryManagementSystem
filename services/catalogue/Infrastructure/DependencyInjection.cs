@@ -1,9 +1,9 @@
 ﻿using Application;
-using Application.Books.Dtos;
 using Infrastructure.Data.Repositories;
 using Infrastructure.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
+using IBookRepository = Application.Books.IBookRepository;
 
 namespace Infrastructure;
 
@@ -14,8 +14,8 @@ public static class DependencyInjection
         var applicationAssembly = typeof(CatalogueApplication).Assembly;
         builder.Services.Configure<MongoOptions>(builder.Configuration.GetSection("MongoDB"));
         builder.Services.AddSingleton<MongoDbContext>();
-        builder.Services.AddTransient(typeof(IMongoRepository<,>), typeof(MongoRepository<,>));
-        builder.Services.AddTransient<IRepository<BookDto>, BookRepository>();
+        builder.Services.AddTransient(typeof(IMongoRepository<>), typeof(MongoRepository<>));
+        builder.Services.AddTransient<IBookRepository, BookRepository>();
 
 
         //services.AddMediatR(cfg => {

@@ -15,18 +15,15 @@ public class GetBooks
         }
     }
 
-    public class GetBooksQueryHandler : IRequestHandler<GetBooksQuery, List<Book>>
+    public class GetBooksQueryHandler 
     {
-        private readonly IBookRepository _repository;
+       // private readonly IBookRepository _repository;
 
-        public GetBooksQueryHandler(IBookRepository repository)
+        public GetBooksQueryHandler()
         {
-            _repository = repository;
+         //   _repository = repository;
         }
 
-        public async Task<List<Book>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
-        {
-            return await _repository.GetBooksAsync<BookDto>(cancellationToken);
-        }
+     
     }
 }

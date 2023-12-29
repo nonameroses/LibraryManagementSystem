@@ -3,9 +3,8 @@ using System.Linq.Expressions;
 
 namespace Infrastructure.Data
 {
-    public interface IMongoRepository<TDocument, TId> where TDocument : IDocument
+    public interface IMongoRepository<TDocument> where TDocument : IDocument
     {
-        Task<TDocument?> FindByIdAsync(TId id, CancellationToken cancellationToken = default);
 
         Task<TDocument?> FindOneAsync(Expression<Func<TDocument, bool>> predicate, CancellationToken cancellationToken = default);
 
@@ -19,6 +18,5 @@ namespace Infrastructure.Data
         Task DeleteRangeAsync(IReadOnlyList<TDocument> entities, CancellationToken cancellationToken = default);
         Task DeleteAsync(Expression<Func<TDocument, bool>> predicate, CancellationToken cancellationToken = default);
         Task DeleteAsync(TDocument entity, CancellationToken cancellationToken = default);
-        Task DeleteByIdAsync(TId id, CancellationToken cancellationToken = default);
     }
 }
