@@ -34,13 +34,12 @@ builder.Services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>)
 builder.Services.AddSingleton<IMongoDbSettings>(serviceProvider =>
     serviceProvider.GetRequiredService<IOptions<MongoDbSettings>>().Value);
 
+
 //builder.Services.AddTransient(typeof(IMongoRepository<,>), typeof(MongoRepository<,>));
 
 //builder.Services.AddTransient<IBookRepository, BookRepository>();
 
 //builder.Services.Configure<MongoOptions>(Configuration.GetSection("MongoOptions"));
-builder.Services.AddApplication();
-builder.AddInfrastructure();
 
 //builder.Services.AddSingleton<MongoOptions>(serviceProvider =>
 //    serviceProvider.GetRequiredService<IOptions<MongoOptions>>().Value);
