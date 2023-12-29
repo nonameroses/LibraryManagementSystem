@@ -26,7 +26,13 @@ var typeAdapterConfig = TypeAdapterConfig.GlobalSettings;
 //builder.Services.AddMongoDbContext<MongoDbContext>(builder.Configuration);
 //builder.Services.AddTransient<MongoDbContext>(new MongoDbContext());
 //builder.Services.AddTransient(typeof(IMongoRepository<,>), typeof(MongoRepository<,>));
+builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
+builder.Services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
 
+
+
+builder.Services.AddSingleton<IMongoDbSettings>(serviceProvider =>
+    serviceProvider.GetRequiredService<IOptions<MongoDbSettings>>().Value);
 
 //builder.Services.AddTransient(typeof(IMongoRepository<,>), typeof(MongoRepository<,>));
 

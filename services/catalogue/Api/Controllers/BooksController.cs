@@ -2,6 +2,7 @@
 using Application.Books.Features.AddBook;
 using Application.Books.Features.GetBooks;
 using Domain.Entities;
+using Infrastructure.Data;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,24 +11,32 @@ namespace Api.Controllers;
 [Route("api/[controller]")]
 public class BooksController : ControllerBase
 {
-    private readonly IMediator _mediator;
+    private readonly IMongoRepository<Book> _bookRepository;
 
-    public BooksController(IMediator mediator)
+    public BooksController(IMongoRepository<Book> bookRepository)
     {
-        _mediator = mediator;
+        _bookRepository = bookRepository;
     }
-    [HttpGet]
-    public async Task<List<Book>> Get()
-    {
-        return await _mediator.Send(new GetBooks.GetBooksQuery());
-    }
-    [HttpPost]
-    public async Task<IActionResult> Post([FromBody] BookDto request)
-    {
-        var command = new AddBook.Command(request);
-        var commandResponse = await _mediator.Send(command);
 
-        return CreatedAtAction(nameof(Get), new { commandResponse.Id }, commandResponse);
+    [HttpPost("registerPerson")]
+    public async Task AddPerson(string firstName, string lastName)
+    {
+        var person = new Book()
+        {
+            Author = "Harry pydder"
+        };
+
+        await _bookRepository.InsertOneAsync(person);
+    }
+
+    [HttpGet("getPeopleData")]
+    public IEnumerable<string> GetPeopleData()
+    {
+        var people = _bookRepository.FilterBy(
+            filter => filter.Author != "Harry pydder",
+            projection => projection.Author
+        );
+        return people;
     }
 
 }

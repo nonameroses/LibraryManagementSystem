@@ -13,9 +13,9 @@ public static class DependencyInjection
     {
         var applicationAssembly = typeof(CatalogueApplication).Assembly;
         builder.Services.Configure<MongoOptions>(builder.Configuration.GetSection("MongoDB"));
-        builder.Services.AddSingleton<MongoDbContext>();
-        builder.Services.AddTransient(typeof(IMongoRepository<>), typeof(MongoRepository<>));
-        builder.Services.AddTransient<IBookRepository, BookRepository>();
+       // builder.Services.AddSingleton<MongoDbContext>();
+        //builder.Services.AddTransient(typeof(IMongoRepository<>), typeof(MongoRepository<>));
+       // builder.Services.AddTransient<IBookRepository, BookRepository>();
 
 
         //services.AddMediatR(cfg => {

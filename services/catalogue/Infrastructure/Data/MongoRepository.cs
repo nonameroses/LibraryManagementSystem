@@ -7,20 +7,23 @@ using System.Linq.Expressions;
 
 namespace Infrastructure.Data;
 
-public class MongoRepository<TDocument> : IMongoRepository<TDocument> where TDocument : IDocument
+public class MongoRepository<TDocument> : IMongoRepository<TDocument>
+    where TDocument : IDocument
 {
     private readonly IMongoCollection<TDocument> _collection;
-    private readonly IMongoDbContext _context;
 
-   public MongoRepository(IMongoDbContext context, IOptions<MongoOptions> options)
+    public MongoRepository(IMongoDbSettings settings)
     {
-        //MongoClient client = new MongoClient(options.Value.ConnectionString);
-        //IMongoDatabase database = client.GetDatabase(options.Value.DatabaseName);
-        _context = context;
-        _collection = _context.GetCollection<TDocument>(options.Value.CollectionName);
+        var database = new MongoClient(settings.ConnectionString).GetDatabase(settings.DatabaseName);
+        _collection = database.GetCollection<TDocument>(GetCollectionName(typeof(TDocument)));
+    }
 
-        //var database = new MongoClient(settings.ConnectionString).GetDatabase(settings.DatabaseName);
-        //MongoClient client = new MongoClient(settings.Value.ConnectionString);
+    private protected string GetCollectionName(Type documentType)
+    {
+        return ((BsonCollectionAttribute)documentType.GetCustomAttributes(
+                typeof(BsonCollectionAttribute),
+                true)
+            .FirstOrDefault())?.CollectionName;
     }
 
     public virtual IQueryable<TDocument> AsQueryable()
@@ -41,10 +44,21 @@ public class MongoRepository<TDocument> : IMongoRepository<TDocument> where TDoc
         return _collection.Find(filterExpression).Project(projectionExpression).ToEnumerable();
     }
 
+    public virtual TDocument FindOne(Expression<Func<TDocument, bool>> filterExpression)
+    {
+        return _collection.Find(filterExpression).FirstOrDefault();
+    }
 
     public virtual Task<TDocument> FindOneAsync(Expression<Func<TDocument, bool>> filterExpression)
     {
         return Task.Run(() => _collection.Find(filterExpression).FirstOrDefaultAsync());
+    }
+
+    public virtual TDocument FindById(string id)
+    {
+        var objectId = new ObjectId(id);
+        var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, objectId);
+        return _collection.Find(filter).SingleOrDefault();
     }
 
     public virtual Task<TDocument> FindByIdAsync(string id)
@@ -58,52 +72,73 @@ public class MongoRepository<TDocument> : IMongoRepository<TDocument> where TDoc
     }
 
 
-    public async Task<bool> ExistsAsync(Expression<Func<TDocument, bool>> predicate, CancellationToken cancellationToken = default)
+    public virtual void InsertOne(TDocument document)
     {
-        return await _collection.Find(predicate).AnyAsync(cancellationToken: cancellationToken)!;
+        _collection.InsertOne(document);
     }
 
-    public async Task<IReadOnlyList<TDocument>> FindAsync(Expression<Func<TDocument, bool>> predicate, CancellationToken cancellationToken = default)
+    public virtual Task InsertOneAsync(TDocument document)
     {
-        return await _collection.Find(predicate).ToListAsync(cancellationToken: cancellationToken)!;
+        return Task.Run(() => _collection.InsertOneAsync(document));
     }
 
-    public Task<TDocument?> FindOneAsync(Expression<Func<TDocument, bool>> predicate, CancellationToken cancellationToken = default)
+    public void InsertMany(ICollection<TDocument> documents)
     {
-        return _collection.Find(predicate).SingleOrDefaultAsync(cancellationToken: cancellationToken)!;
-    }
-
-
-
-    public async Task<IReadOnlyList<TDocument>> GetAllAsync(CancellationToken cancellationToken = default)
-    {
-        return await _collection.AsQueryable().ToListAsync(cancellationToken);
-    }
-
-    public async Task AddAsync(TDocument document, CancellationToken cancellationToken = default)
-    {
-        await _collection.InsertOneAsync(document, new InsertOneOptions(), cancellationToken);
-    }
-
-    public async Task UpdateAsync(TDocument entity, CancellationToken cancellationToken = default)
-    {
-        await _collection.ReplaceOneAsync(x => x.Id!.Equals(entity.Id), entity, cancellationToken: cancellationToken);
-    }
-
-    public Task DeleteRangeAsync(IReadOnlyList<TDocument> entities, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task DeleteAsync(Expression<Func<TDocument, bool>> predicate, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task DeleteAsync(TDocument entity, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
+        _collection.InsertMany(documents);
     }
 
 
+    public virtual async Task InsertManyAsync(ICollection<TDocument> documents)
+    {
+        await _collection.InsertManyAsync(documents);
+    }
+
+    public void ReplaceOne(TDocument document)
+    {
+        var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, document.Id);
+        _collection.FindOneAndReplace(filter, document);
+    }
+
+    public virtual async Task ReplaceOneAsync(TDocument document)
+    {
+        var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, document.Id);
+        await _collection.FindOneAndReplaceAsync(filter, document);
+    }
+
+    public void DeleteOne(Expression<Func<TDocument, bool>> filterExpression)
+    {
+        _collection.FindOneAndDelete(filterExpression);
+    }
+
+    public Task DeleteOneAsync(Expression<Func<TDocument, bool>> filterExpression)
+    {
+        return Task.Run(() => _collection.FindOneAndDeleteAsync(filterExpression));
+    }
+
+    public void DeleteById(string id)
+    {
+        var objectId = new ObjectId(id);
+        var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, objectId);
+        _collection.FindOneAndDelete(filter);
+    }
+
+    public Task DeleteByIdAsync(string id)
+    {
+        return Task.Run(() =>
+        {
+            var objectId = new ObjectId(id);
+            var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, objectId);
+            _collection.FindOneAndDeleteAsync(filter);
+        });
+    }
+
+    public void DeleteMany(Expression<Func<TDocument, bool>> filterExpression)
+    {
+        _collection.DeleteMany(filterExpression);
+    }
+
+    public Task DeleteManyAsync(Expression<Func<TDocument, bool>> filterExpression)
+    {
+        return Task.Run(() => _collection.DeleteManyAsync(filterExpression));
+    }
 }
