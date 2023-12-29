@@ -7,7 +7,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace Application.Common.Interfaces;
+namespace Domain;
 
 public interface IDocument
 {
