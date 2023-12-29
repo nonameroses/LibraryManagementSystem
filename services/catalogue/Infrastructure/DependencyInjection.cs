@@ -1,4 +1,5 @@
 ﻿using Application;
+using Application.Books.Dtos;
 using Infrastructure.Data.Repositories;
 using Infrastructure.Data;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +15,7 @@ public static class DependencyInjection
         builder.Services.Configure<MongoOptions>(builder.Configuration.GetSection("MongoDB"));
         builder.Services.AddSingleton<MongoDbContext>();
         builder.Services.AddTransient(typeof(IMongoRepository<,>), typeof(MongoRepository<,>));
-        builder.Services.AddTransient<IBookRepository, BookRepository>();
+        builder.Services.AddTransient<IRepository<BookDto>, BookRepository>();
 
 
         //services.AddMediatR(cfg => {
