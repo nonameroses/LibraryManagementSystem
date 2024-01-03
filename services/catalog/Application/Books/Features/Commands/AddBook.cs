@@ -2,7 +2,7 @@
 //using MapsterMapper;
 using MediatR;
 
-namespace Application.Books.Features.AddBooks;
+namespace Application.Books.Features.Commands;
 
 public class AddBook
 {
@@ -16,32 +16,29 @@ public class AddBook
         }
     }
 
-    public class AddBookCommandHandler : IRequestHandler<Command, Book>
+    public class Handler : IRequestHandler<Command, Book>
     {
         private readonly IMongoRepository<Book> _bookRepository;
-        //  private readonly IBookRepository _repository;
-        //private readonly IMapper _mapper;
 
-        public AddBookCommandHandler(IMongoRepository<Book> bookRepository)
+        public Handler(IMongoRepository<Book> bookRepository)
         {
-            //  _repository = repository;
             _bookRepository = bookRepository;
         }
+
         public async Task<Book> Handle(Command request, CancellationToken cancellationToken)
         {
             var entity = new Book
             {
-                Name = request.Book.Name,
-                Author = request.Book.Author,
                 Title = request.Book.Title,
+                Author = request.Book.Author,
                 Isbn = request.Book.Isbn,
                 Quantity = request.Book.Quantity
             };
 
-             await _bookRepository.InsertOneAsync(entity);
+            await _bookRepository.InsertOneAsync(entity);
 
-             return entity;
-             //return _mapper.Map<BookDto>(entity);
+            return entity;
+            //return _mapper.Map<BookDto>(entity);
         }
     }
 }
