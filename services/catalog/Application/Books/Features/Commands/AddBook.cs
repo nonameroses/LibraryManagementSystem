@@ -37,7 +37,6 @@ public class AddBook
             await _bookRepository.InsertOneAsync(entity);
 
             return entity;
-            //return _mapper.Map<BookDto>(entity);
         }
     }
 }
