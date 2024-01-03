@@ -1,7 +1,9 @@
 ﻿using Domain.Entities;
 using Infrastructure.Data;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using Application.Books.Features.AddBooks;
 
 namespace Api.Controllers;
 
@@ -9,11 +11,12 @@ namespace Api.Controllers;
 [Route("[controller]")]
 public class SampleController : ControllerBase
 {
-    private readonly IMongoRepository<Book> _peopleRepository;
+    // private readonly IMongoRepository<Book> _peopleRepository;
+    private readonly IMediator _mediator;
 
-    public SampleController(IMongoRepository<Book> peopleRepository)
+    public SampleController(IMediator mediator)
     {
-        _peopleRepository = peopleRepository;
+        _mediator = mediator;
     }
 
     [HttpPost("registerBook")]
@@ -21,19 +24,20 @@ public class SampleController : ControllerBase
     {
         var book = new Book()
         {
-            Author = "Pyder"
+            Author = firstName
         };
+        
+        await _mediator.Send(new AddBook.Command(book));
 
-        await _peopleRepository.InsertOneAsync(book);
     }
 
-    [HttpGet("getPeopleData")]
-    public IEnumerable<string> GetPeopleData()
-    {
-        var people = _peopleRepository.FilterBy(
-            filter => filter.Author != "test",
-            projection => projection.Author
-        );
-        return people;
-    }
+    //[HttpGet("getPeopleData")]
+    //public IEnumerable<string> GetPeopleData()
+    //{
+    //    var people = _peopleRepository.FilterBy(
+    //        filter => filter.Author != "test",
+    //        projection => projection.Author
+    //    );
+    //    return people;
+    //}
 }

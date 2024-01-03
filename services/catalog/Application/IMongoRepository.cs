@@ -2,7 +2,7 @@
 using Domain.Entities;
 
 
-namespace Infrastructure.Data;
+namespace Application;
 
 public interface IMongoRepository<TDocument> where TDocument : IDocument
 {

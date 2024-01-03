@@ -1,7 +1,4 @@
-﻿
-
-using Domain.Entities;
-using Infrastructure.Data;
+﻿using Domain.Entities;
 //using MapsterMapper;
 using MediatR;
 
