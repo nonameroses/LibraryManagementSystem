@@ -7,13 +7,17 @@ public class UpdateBook
 {
     public sealed class Command : IRequest<Book>
     {
-        public readonly Book Book;
-        public readonly ObjectId Id;
+        public string Title { get; set; }
+        public string Author { get; set; }
+        public int Isbn { get; set; }
+        public int Quantity { get; set; }
 
-        public Command(Book book, ObjectId id)
+        public Command(string title, string author, int isbn, int quantity)
         {
-            Book = book;
-            Id = id;
+            Title = title;
+            Author = author;
+            Isbn = isbn;
+            Quantity = quantity;
         }
     }
 
@@ -28,16 +32,14 @@ public class UpdateBook
 
         public async Task<Book> Handle(Command request, CancellationToken cancellationToken)
         {
-            var entityToUpdate = await _mongoRepository.FindByIdAsync(request.Id.ToString());
 
 
             var entity = new Book
             {
-                Title = request.Book.Title,
-                Author = request.Book.Author,
-                Isbn = request.Book.Isbn,
-                Quantity = request.Book.Quantity,
-                Id = request.Id
+                Title = request.Title,
+                Author = request.Author,
+                Isbn = request.Isbn,
+                Quantity = request.Quantity,
             };
             //entityToUpdate = entity;
 

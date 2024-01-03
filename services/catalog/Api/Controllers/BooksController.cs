@@ -22,7 +22,7 @@ public class BooksController : ControllerBase
     }
 
     [HttpPost("addBook")]
-    public async Task AddPerson(Book request)
+    public async Task<IActionResult> AddPerson(Book request)
     {
         var book = new Book()
         {
@@ -35,6 +35,7 @@ public class BooksController : ControllerBase
         
         await _mediator.Send(new AddBook.Command(book));
 
+        return Ok(book);
     }
 
     [HttpGet("getBooks")]
@@ -52,10 +53,17 @@ public class BooksController : ControllerBase
         return result;
     }
     [HttpPut("updateBook")]
-    public async Task<Book> UpdateBook(ObjectId id, Book request)
+    public async Task<IActionResult> UpdateBook(ObjectId id, Book request)
     {
         var result = await _mediator.Send(new UpdateBook.Command(request, id));
 
-        return result;
+        return NoContent();
+    }
+    [HttpDelete("deleteBook")]
+    public async Task<IActionResult> DeleteBook(string title, string author, int isbn)
+    {
+        await _mediator.Send(new DeleteBook.Command( title,  author, isbn));
+
+        return NoContent();
     }
 }
