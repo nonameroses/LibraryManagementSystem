@@ -1,4 +1,6 @@
-﻿using Domain.Entities;
+﻿
+
+using Domain.Entities;
 using Infrastructure.Data;
 //using MapsterMapper;
 using MediatR;
@@ -39,9 +41,10 @@ public class AddBook
                 Quantity = request.Book.Quantity
             };
 
-            await _bookRepository.AddAsync(entity);
+             await _bookRepository.InsertOneAsync(entity);
 
-           //return _mapper.Map<BookDto>(entity);
+             return entity;
+             //return _mapper.Map<BookDto>(entity);
         }
     }
 }

@@ -1,7 +1,5 @@
-﻿
-namespace Domain.Entities;
-[BsonCollection("books")]
-public class Book : Document
+﻿namespace Application.Books.Dtos;
+public class Book
 {
     public string Name { get; set; } = default!;
     public string Title { get; set; } = default!;
