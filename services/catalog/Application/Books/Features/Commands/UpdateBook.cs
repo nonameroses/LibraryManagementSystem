@@ -7,17 +7,13 @@ public class UpdateBook
 {
     public sealed class Command : IRequest<Book>
     {
-        public string Title { get; set; }
-        public string Author { get; set; }
-        public int Isbn { get; set; }
-        public int Quantity { get; set; }
+        public readonly Book Book;
+        public readonly ObjectId Id;
 
-        public Command(string title, string author, int isbn, int quantity)
+        public Command(Book book, ObjectId id)
         {
-            Title = title;
-            Author = author;
-            Isbn = isbn;
-            Quantity = quantity;
+            Book = book;
+            Id = id;
         }
     }
 
@@ -33,13 +29,13 @@ public class UpdateBook
         public async Task<Book> Handle(Command request, CancellationToken cancellationToken)
         {
 
-
             var entity = new Book
             {
-                Title = request.Title,
-                Author = request.Author,
-                Isbn = request.Isbn,
-                Quantity = request.Quantity,
+                Title = request.Book.Title,
+                Author = request.Book.Author,
+                Isbn = request.Book.Isbn,
+                Quantity = request.Book.Quantity,
+                Id = request.Id
             };
             //entityToUpdate = entity;
 
