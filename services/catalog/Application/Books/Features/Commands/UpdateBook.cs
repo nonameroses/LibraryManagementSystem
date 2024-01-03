@@ -37,13 +37,13 @@ public class UpdateBook
                 Author = request.Book.Author,
                 Isbn = request.Book.Isbn,
                 Quantity = request.Book.Quantity,
-                Id = request.Book.Id
+                Id = request.Id
             };
-            entityToUpdate = entity;
+            //entityToUpdate = entity;
 
-            await _mongoRepository.ReplaceOneAsync(entityToUpdate);
+            await _mongoRepository.ReplaceOneAsync(entity);
 
-            return entityToUpdate;
+            return entity;
             //return _mapper.Map<BookDto>(entity);
         }
     }

@@ -52,7 +52,7 @@ public class BooksController : ControllerBase
         return result;
     }
     [HttpPut("updateBook")]
-    public async Task<Book> UpdateBook(string id, Book request)
+    public async Task<Book> UpdateBook(ObjectId id, Book request)
     {
         var result = await _mediator.Send(new UpdateBook.Command(request, id));
 
