@@ -18,16 +18,16 @@ public class GetBooks
 
     public class Handler : IRequestHandler<Query, IEnumerable<Book>>
     {
-        private readonly IMongoRepository<Book> _bookRepository;
+        private readonly IMongoRepository<Book> _mongoRepository;
 
-        public Handler(IMongoRepository<Book> bookRepository)
+        public Handler(IMongoRepository<Book> mongoRepository)
         {
-            _bookRepository = bookRepository;
+            _mongoRepository = mongoRepository;
         }
 
         public async Task<IEnumerable<Book>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var books = _bookRepository.AsQueryable();
+            var books = _mongoRepository.AsQueryable();
 
             return books;
         }

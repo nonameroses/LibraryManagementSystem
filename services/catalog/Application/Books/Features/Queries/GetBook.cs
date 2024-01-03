@@ -23,21 +23,21 @@ public class GetBook
 
     public class Handler : IRequestHandler<Query, Book>
     {
-        private readonly IMongoRepository<Book> _bookRepository;
+        private readonly IMongoRepository<Book> _mongoRepository;
 
-        public Handler(IMongoRepository<Book> bookRepository)
+        public Handler(IMongoRepository<Book> mongoRepository)
         {
-            _bookRepository = bookRepository;
+            _mongoRepository = mongoRepository;
         }
 
         public async Task<Book> Handle(Query request, CancellationToken cancellationToken)
         {
             // return a single book if any of the filter matches
-            var book = _bookRepository.FilterBy(
+            var book = _mongoRepository.FindOne(
                 filter => filter.Author == request.Author ||
                            filter.Title == request.Title ||
                            filter.Isbn == request.Isbn
-                ).First();
+                );
 
             return book;
         }

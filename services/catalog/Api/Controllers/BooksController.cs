@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using Application.Books.Features.Commands;
 using Application.Books.Features.Queries;
+using MongoDB.Bson;
 
 namespace Api.Controllers;
 
@@ -47,6 +48,13 @@ public class BooksController : ControllerBase
     public async Task<Book> GetBook(string title, string author, int isbn)
     {
         var result = await _mediator.Send(new GetBook.Query(title,author,isbn));
+
+        return result;
+    }
+    [HttpPut("updateBook")]
+    public async Task<Book> UpdateBook(string id, Book request)
+    {
+        var result = await _mediator.Send(new UpdateBook.Command(request, id));
 
         return result;
     }
