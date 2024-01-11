@@ -55,7 +55,7 @@ public class BooksController : ControllerBase
         return books;
     }
     [HttpGet("getBook")]
-    public async Task<bool> GetBook(string title, string author, int isbn)
+    public async Task<Book> GetBook(string title, string author, int isbn)
     {
         var result = await _mediator.Send(new GetBook.Query(title,author,isbn));
 
@@ -75,7 +75,7 @@ public class BooksController : ControllerBase
         //result.Id = doc2.GetElement(0));
 
        //Console.WriteLine(doc2.GetElement(0));
-        return doc2;
+        return result;
     }
     [HttpPut("updateBook")]
     public async Task<IActionResult> UpdateBook(ObjectId id, Book request)
