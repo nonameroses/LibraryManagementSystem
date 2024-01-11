@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using FluentValidation;
 using MediatR;
 using MongoDB.Bson;
 
@@ -8,15 +9,42 @@ public class UpdateBook
     public sealed class Command : IRequest<Book>
     {
         public readonly Book Book;
-        public readonly ObjectId Id;
 
-        public Command(Book book, ObjectId id)
+
+        public Command(Book book)
         {
             Book = book;
-            Id = id;
+
         }
     }
+    public sealed class Validator : AbstractValidator<Command>
+    {
+        public Validator()
+        {
+            RuleFor(p => p.Book.Author)
+                .NotEmpty()
+                .MaximumLength(50)
+                .WithName("Author")
+                .WithMessage("Author name cannot be empty!");
 
+            RuleFor(p => p.Book.Title)
+                .NotEmpty()
+                .MaximumLength(50)
+                .WithName("Title")
+                .WithMessage("Title name cannot be empty!");
+
+            RuleFor(p => p.Book.Quantity)
+                .GreaterThanOrEqualTo(1)
+                .WithName("Cost")
+                .WithMessage("Quantity must be more than 0!");
+
+            RuleFor(p => p.Book.Isbn)
+                .GreaterThanOrEqualTo(1)
+                .WithName("Cost")
+                .WithMessage("International Standard Book Number cannot be 0!");
+
+        }
+    }
     public class Handler : IRequestHandler<Command, Book>
     {
         private readonly IMongoRepository<Book> _mongoRepository;
@@ -34,14 +62,13 @@ public class UpdateBook
                           filter.Isbn == request.Book.Isbn
             );
 
-
             var entity = new Book
             {
                 Title = request.Book.Title,
                 Author = request.Book.Author,
                 Isbn = request.Book.Isbn,
                 Quantity = request.Book.Quantity,
-                Id = request.Id
+                Id = book.Id
             };
             //entityToUpdate = entity;
 
