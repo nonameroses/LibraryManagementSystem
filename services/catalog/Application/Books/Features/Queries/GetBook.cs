@@ -22,13 +22,13 @@ public class GetBook
         }
     }
 
-    public sealed class Validator : AbstractValidator<Query>
-    {
-        public Validator()
-        {
-            RuleFor(p => p.Author).NotEmpty().WithMessage("KA NX");
-        }
-    }
+    //public sealed class Validator : AbstractValidator<Query>
+    //{
+    //    public Validator()
+    //    {
+    //        RuleFor(p => p.Author).NotEmpty().WithMessage("KA NX");
+    //    }
+    //}
 
     public class Handler : IRequestHandler<Query, Book>
     {
@@ -42,13 +42,13 @@ public class GetBook
         public async Task<Book> Handle(Query request, CancellationToken cancellationToken)
         {
             // return a single book if any of the filter matches
-            var book = _mongoRepository.FindOne(
+            var book = _mongoRepository.FindOneAsync(
                 filter => filter.Author == request.Author ||
                            filter.Title == request.Title ||
                            filter.Isbn == request.Isbn
                 );
 
-            return book;
+            return await book;
         }
     }
 }
