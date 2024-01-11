@@ -32,10 +32,19 @@ public class BooksController : ControllerBase
             Isbn = request.Isbn,
             Quantity = request.Quantity,
         };
-        
-        await _mediator.Send(new AddBook.Command(book));
 
-        return Ok(book.Id);
+
+
+        //using (StreamReader sr = new StreamReader(Request.Body))
+        //{
+        //    MongoDB.Bson.Serialization.BsonSerializer.Deserialize<Book>(await sr.ReadToEndAsync());
+          
+
+   
+        //}
+        await _mediator.Send(new AddBook.Command(book));
+        return CreatedAtAction(nameof(GetBook), new { id = book.Id }, book);
+
     }
 
     [HttpGet("getBooks")]
@@ -46,16 +55,34 @@ public class BooksController : ControllerBase
         return books;
     }
     [HttpGet("getBook")]
-    public async Task<Book> GetBook(string title, string author, int isbn)
+    public async Task<bool> GetBook(string title, string author, int isbn)
     {
         var result = await _mediator.Send(new GetBook.Query(title,author,isbn));
 
-        return result;
+        BsonDocument doc = result.ToBsonDocument();
+        // Change the name
+        doc["Title"] = "o2-modified";
+        // Deserialize BsonDocument to .NET object
+ 
+
+        // Serialize to Json
+        string json = result.ToJson();
+
+        // Deserialize from Json
+
+        BsonDocument doc2 = BsonDocument.Parse(result.ToJson());
+
+        //result.Id = doc2.GetElement(0));
+
+       //Console.WriteLine(doc2.GetElement(0));
+        return doc2;
     }
     [HttpPut("updateBook")]
     public async Task<IActionResult> UpdateBook(ObjectId id, Book request)
     {
-        var result = await _mediator.Send(new UpdateBook.Command(request, id));
+        var book = await _mediator.Send(new GetBook.Query(request.Title, request.Author, request.Isbn));
+
+        var result = await _mediator.Send(new UpdateBook.Command(book, book.Id));
 
         return NoContent();
     }
