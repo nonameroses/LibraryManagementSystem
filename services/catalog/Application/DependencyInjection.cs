@@ -5,7 +5,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 
-namespace Application;
+namespace Microsoft.Extensions.DependencyInjection;
 
 public class DependencyInjection
 {
