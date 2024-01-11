@@ -104,7 +104,10 @@ public class MongoRepository<TDocument> : IMongoRepository<TDocument>
     public virtual async Task ReplaceOneAsync(TDocument document)
     {
         var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, document.Id);
-        await _collection.FindOneAndReplaceAsync(filter, document);
+        //await _collection.FindOneAndReplaceAsync(filter, document);
+        await _collection.ReplaceOneAsync(
+            doc => doc.Id == document.Id,
+            document);
     }
 
     public void DeleteOne(Expression<Func<TDocument, bool>> filterExpression)

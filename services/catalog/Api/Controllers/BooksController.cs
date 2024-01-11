@@ -78,7 +78,7 @@ public class BooksController : ControllerBase
         return result;
     }
     [HttpPut("updateBook")]
-    public async Task<IActionResult> UpdateBook(ObjectId id, Book request)
+    public async Task<IActionResult> UpdateBook( Book request)
     {
         var book = await _mediator.Send(new GetBook.Query(request.Title, request.Author, request.Isbn));
 

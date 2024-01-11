@@ -28,6 +28,12 @@ public class UpdateBook
 
         public async Task<Book> Handle(Command request, CancellationToken cancellationToken)
         {
+            var book = _mongoRepository.FindOne(
+                filter => filter.Author == request.Book.Author ||
+                          filter.Title == request.Book.Title ||
+                          filter.Isbn == request.Book.Isbn
+            );
+
 
             var entity = new Book
             {
