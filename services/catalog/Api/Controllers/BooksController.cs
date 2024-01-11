@@ -35,7 +35,7 @@ public class BooksController : ControllerBase
         
         await _mediator.Send(new AddBook.Command(book));
 
-        return Ok(book);
+        return Ok(book.Id);
     }
 
     [HttpGet("getBooks")]

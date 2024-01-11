@@ -23,18 +23,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 
-builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<AddBook.Validator>());
+//builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<AddBook.Validator>());
+//builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<GetBook.Validator>());
+
 
 foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
 {
 
-    builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-    builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assembly));
-    builder.Services.AddMediatR(cfg => {
+    //builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+    //builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assembly));
+    builder.Services.AddMediatR(cfg =>
+    {
         cfg.RegisterServicesFromAssemblies(assembly);
         cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
-
-
     });
 }
 //builder.Services.AddMediatR(cf => cf.RegisterServicesFromAssembly(typeof(Program).Assembly));
@@ -46,6 +47,8 @@ builder.Services.AddSingleton<IMongoDbSettings>(serviceProvider =>
 builder.Services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
 builder.Services.AddControllers(
     options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
+
+builder.Services.AddValidatorsFromAssemblyContaining<AddBook.Validator>();
 
 //builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

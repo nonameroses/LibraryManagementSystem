@@ -17,20 +17,29 @@ public class AddBook
     }
     public sealed class Validator : AbstractValidator<Command>
     {
-        //public Validator()
-        //{
-        //    RuleFor(p => p.Book.Author).NotEmpty().WithMessage("KA NX");
-        //}
-        public Validator(IMongoRepository<Book> _repository)
+        public Validator()
         {
             RuleFor(p => p.Book.Author)
                 .NotEmpty()
-                .MaximumLength(75)
-                .WithName("Name");
+                .MaximumLength(50)
+                .WithName("Author")
+                .WithMessage("Author name cannot be empty!");
+
+            RuleFor(p => p.Book.Title)
+                .NotEmpty()
+                .MaximumLength(50)
+                .WithName("Title")
+                .WithMessage("Title name cannot be empty!");
 
             RuleFor(p => p.Book.Quantity)
                 .GreaterThanOrEqualTo(1)
-                .WithName("Cost");
+                .WithName("Cost")
+                .WithMessage("Quantity must be more than 0!");
+
+            RuleFor(p => p.Book.Isbn)
+                .GreaterThanOrEqualTo(1)
+                .WithName("Cost")
+                .WithMessage("International Standard Book Number cannot be 0!");
 
         }
     }
