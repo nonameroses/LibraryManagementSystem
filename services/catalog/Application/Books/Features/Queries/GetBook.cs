@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using MediatR;
 using System.Diagnostics.Metrics;
+using FluentValidation;
 
 namespace Application.Books.Features.Queries;
 
@@ -18,6 +19,14 @@ public class GetBook
             Title = title;
             Author = author;
             Isbn = isbn;
+        }
+    }
+
+    public sealed class Validator : AbstractValidator<Query>
+    {
+        public Validator()
+        {
+            RuleFor(p => p.Author).NotEmpty().WithMessage("KA NX");
         }
     }
 

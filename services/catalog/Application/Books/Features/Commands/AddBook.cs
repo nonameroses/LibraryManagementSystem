@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using FluentValidation;
 using MediatR;
 
 namespace Application.Books.Features.Commands;
@@ -12,6 +13,13 @@ public class AddBook
         public Command(Book book)
         {
             Book = book;
+        }
+    }
+    public sealed class Validator : AbstractValidator<Command>
+    {
+        public Validator()
+        {
+            RuleFor(p => p.Book.Author).NotEmpty().WithMessage("KA NX");
         }
     }
 

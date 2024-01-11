@@ -1,11 +1,23 @@
 using Application;
+using Application.Books.Features.Queries;
+using FluentValidation;
 using Infrastructure.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using FluentValidation.AspNetCore;
+using Application.Books.Features.Commands;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+//builder.Services.AddValidatorsFromAssembly(applicationAssembly);#
+
+//builder.Services.AddValidatorsFromAssemblyContaining<AddBook.Validator>(); // register validators
+//builder.Services.AddValidatorsFromAssemblyContaining<GetBook.Validator>(); // register validators
+//builder.Services.AddFluentValidationAutoValidation(); // the same old MVC pipeline behavior
+//builder.Services.AddFluentValidationClientsideAdapters(); // for client side
+
+builder.Services.AddApplicationServices();
 foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
 {
     builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assembly));
@@ -17,7 +29,8 @@ builder.Services.AddSingleton<IMongoDbSettings>(serviceProvider =>
     serviceProvider.GetRequiredService<IOptions<MongoDbSettings>>().Value);
 
 builder.Services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
-builder.Services.AddControllers();
+builder.Services.AddControllers(
+    options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
