@@ -107,35 +107,6 @@ public class MongoRepository<TDocument> : IMongoRepository<TDocument>
         await _collection.FindOneAndReplaceAsync(filter, document);
     }
 
-    public virtual async Task Update(Book document)
-    {
-        //var filter = Builders<Book>.Filter.Eq(doc => doc.Author || doc.Isbn, document.Author, document.Isbn);
-        var builder = Builders<Book>.Filter;
-        var filter = builder.Empty;
-
-        if (!string.IsNullOrWhiteSpace(document.Author))
-        {
-            var firstNameFilter = builder.Eq(x => x.Author, document.Author);
-            filter &= firstNameFilter;
-        }
-
-        if (!string.IsNullOrWhiteSpace(document.Title))
-        {
-            var lastNameFilter = builder.Eq(x => x.Title, document.Title);
-            filter &= lastNameFilter;
-        }
-
-        if (document.Isbn != null)
-        {
-            var lastNameFilter = builder.Eq(x => x.Isbn, document.Isbn);
-            filter &= lastNameFilter;
-        }
-
-        var result = await _collection.Find(filter).ToListAsync();
-
-        await _collection.FindOneAndReplaceAsync(filter, document);
-    }
-
     public void DeleteOne(Expression<Func<TDocument, bool>> filterExpression)
     {
         _collection.FindOneAndDelete(filterExpression);
