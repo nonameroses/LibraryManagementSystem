@@ -31,11 +31,6 @@ public class AddBook
                 .WithName("Title")
                 .WithMessage("Title name cannot be empty!");
 
-            RuleFor(p => p.Book.Quantity)
-                .GreaterThanOrEqualTo(1)
-                .WithName("Cost")
-                .WithMessage("Quantity must be more than 0!");
-
             RuleFor(p => p.Book.Isbn)
                 .GreaterThanOrEqualTo(1)
                 .WithName("Cost")
@@ -59,8 +54,7 @@ public class AddBook
             {
                 Title = request.Book.Title,
                 Author = request.Book.Author,
-                Isbn = request.Book.Isbn,
-                Quantity = request.Book.Quantity
+                Isbn = request.Book.Isbn
             };
 
             await _bookRepository.InsertOneAsync(entity);

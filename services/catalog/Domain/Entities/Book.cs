@@ -8,5 +8,4 @@ public class Book : Document
     public string? Author { get; set; }
     public bool Active { get; private set; } = true;
     public int Isbn { get; set; }
-    public decimal? Quantity { get; set; }
 }

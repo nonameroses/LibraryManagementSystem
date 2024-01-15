@@ -29,8 +29,7 @@ public class BooksController : ControllerBase
             // No need to assign ID property because ID is unique auto generated value
             Title = request.Title,
             Author = request.Author,
-            Isbn = request.Isbn,
-            Quantity = request.Quantity,
+            Isbn = request.Isbn
         };
 
 

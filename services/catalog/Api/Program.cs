@@ -26,7 +26,7 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<AddBook.Validator>());
 //builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<GetBook.Validator>());
 
-
+// Dependency Injection
 foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
 {
 

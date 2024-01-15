@@ -33,11 +33,6 @@ public class UpdateBook
                 .WithName("Title")
                 .WithMessage("Title name cannot be empty!");
 
-            RuleFor(p => p.Book.Quantity)
-                .GreaterThanOrEqualTo(1)
-                .WithName("Cost")
-                .WithMessage("Quantity must be more than 0!");
-
             RuleFor(p => p.Book.Isbn)
                 .GreaterThanOrEqualTo(1)
                 .WithName("Cost")
@@ -67,7 +62,6 @@ public class UpdateBook
                 Title = request.Book.Title,
                 Author = request.Book.Author,
                 Isbn = request.Book.Isbn,
-                Quantity = request.Book.Quantity,
                 Id = book.Id
             };
             //entityToUpdate = entity;
