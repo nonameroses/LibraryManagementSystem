@@ -2,7 +2,6 @@
 using System.Linq.Expressions;
 using MongoDB.Driver;
 using Application;
-using Domain;
 
 namespace Infrastructure.Data;
 

@@ -56,6 +56,7 @@ public class UpdateBook
 
         public async Task<Book> Handle(Command request, CancellationToken cancellationToken)
         {
+            // Maybe change by id  ?
             var book = _mongoRepository.FindOne(
                 filter => filter.Author == request.Book.Author ||
                           filter.Title == request.Book.Title ||
