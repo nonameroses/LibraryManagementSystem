@@ -1,6 +1,5 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using System.Text.Json.Serialization;
 
 namespace Domain.Entities;
 // Abstract class for every class that inherits from this to have unique ID and a date when the object was created

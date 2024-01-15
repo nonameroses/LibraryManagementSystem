@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain.Entities;
-
-[BsonCollection("people")]
-public class Person : Document
+﻿namespace Domain.Entities;
+//The collection name in MongoDB
+[BsonCollection("books")]
+// Book inherits from abstract class Document
+public class Book : Document
 {
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public DateTime BirthDate { get; set; }
+    public string? Title { get; set; }
+    public string? Author { get; set; }
+    public bool Active { get; private set; } = true;
+    public int Isbn { get; set; }
+    public decimal? Quantity { get; set; }
 }

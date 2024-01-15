@@ -1,11 +1,7 @@
 ﻿using Domain.Entities;
-
 using System.Linq.Expressions;
-
-using MongoDB.Bson;
 using MongoDB.Driver;
 using Application;
-
 
 namespace Infrastructure.Data;
 
