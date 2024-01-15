@@ -1,12 +1,13 @@
-﻿namespace Domain.Entities;
-
-[AttributeUsage(AttributeTargets.Class, Inherited = false)]
-public class BsonCollectionAttribute : Attribute
+﻿namespace Domain.Entities
 {
-    public string CollectionName { get; }
-
-    public BsonCollectionAttribute(string collectionName)
+    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
+    public class BsonCollectionAttribute : Attribute
     {
-        CollectionName = collectionName;
+        public string CollectionName { get; }
+
+        public BsonCollectionAttribute(string collectionName)
+        {
+            CollectionName = collectionName;
+        }
     }
 }

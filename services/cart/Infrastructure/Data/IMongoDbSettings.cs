@@ -1,4 +1,5 @@
-﻿namespace Infrastructure.Data;
+﻿
+namespace Infrastructure.Data;
 
 public interface IMongoDbSettings
 {
