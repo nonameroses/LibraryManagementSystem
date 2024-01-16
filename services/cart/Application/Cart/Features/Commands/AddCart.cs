@@ -6,11 +6,11 @@ namespace Application.Cart.Features.Commands;
 
 public class AddCart
 {
-    public sealed class Command : IRequest<Domain.Entities.Cart>
+    public sealed class Command : IRequest<CustomerCart>
     {
-        public readonly Domain.Entities.Cart Cart;
+        public readonly CustomerCart Cart;
 
-        public Command(Domain.Entities.Cart cart)
+        public Command(CustomerCart cart)
         {
             Cart = cart;
         }
@@ -19,24 +19,24 @@ public class AddCart
     {
         public Validator()
         {
-        //    RuleFor(p => p.Cart.FirstName)
+        //    RuleFor(p => p.Cartt.FirstName)
         //        .NotEmpty()
         //        .MaximumLength(50)
         //        .WithName("FirstName")
         //        .WithMessage("FirstName name cannot be empty!");
 
-        //    RuleFor(p => p.Cart.LastName)
+        //    RuleFor(p => p.Cartt.LastName)
         //        .NotEmpty()
         //        .MaximumLength(50)
         //        .WithName("Title")
         //        .WithMessage("Title name cannot be empty!");
 
-        //    RuleFor(p => p.Cart.Email)
+        //    RuleFor(p => p.Cartt.Email)
         //        .GreaterThanOrEqualTo(1)
         //        .WithName("Isbn")
         //        .WithMessage("International Standard Book Number cannot be 0!");
 
-        //    RuleFor(p => p.Cart.Quantity)
+        //    RuleFor(p => p.Cartt.Quantity)
         //        .GreaterThanOrEqualTo(1)
         //        .WithName("Quantity")
         //        .WithMessage("Quantity must be more than 0!");
@@ -44,18 +44,18 @@ public class AddCart
         }
     }
 
-    public class Handler : IRequestHandler<Command, Domain.Entities.Cart>
+    public class Handler : IRequestHandler<Command, CustomerCart>
     {
-        private readonly IMongoRepository<Domain.Entities.Cart> _cartRepository;
+        private readonly IMongoRepository<CustomerCart> _cartRepository;
 
-        public Handler(IMongoRepository<Domain.Entities.Cart> bookRepository)
+        public Handler(IMongoRepository<CustomerCart> bookRepository)
         {
             _cartRepository = bookRepository;
         }
 
-        public async Task<Domain.Entities.Cart> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<CustomerCart> Handle(Command request, CancellationToken cancellationToken)
         {
-            var entity = new Cart
+            var entity = new CustomerCart
             {
                 Title = request.Book.Title,
                 Author = request.Book.Author,

@@ -46,11 +46,11 @@ public class AddBook
 
     public class Handler : IRequestHandler<Command, Book>
     {
-        private readonly IMongoRepository<Book> _bookRepository;
+        private readonly IMongoRepository<Book> _mongoRepository;
 
-        public Handler(IMongoRepository<Book> bookRepository)
+        public Handler(IMongoRepository<Book> mongoRepository)
         {
-            _bookRepository = bookRepository;
+            _mongoRepository = mongoRepository;
         }
 
         public async Task<Book> Handle(Command request, CancellationToken cancellationToken)
@@ -63,7 +63,7 @@ public class AddBook
                 Quantity = request.Book.Quantity
             };
 
-            await _bookRepository.InsertOneAsync(entity);
+            await _mongoRepository.InsertOneAsync(entity);
 
             return entity;
         }
