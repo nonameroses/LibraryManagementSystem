@@ -1,12 +1,12 @@
 ﻿namespace Domain.Entities;
 
 //The collection name in MongoDB
-[BsonCollection("customer")]
+[BsonCollection("cart")]
 // Book inherits from abstract class Document
-public class Customer : Document
+public class Cart : Document
 {
     public string? FirstName { get; set; }
-    public string? SecondName { get; set; }
+    public string? LastName { get; set; }
     public string? Email { get; set; } 
-    public List<string> Orders { get; set; }
+  //  public List<OrderItem> Orders { get; set; }
 }

@@ -4,7 +4,7 @@ using Domain.Entities;
 
 namespace Application;
 
-public interface IMongoRepository<TDocument> where TDocument : Domain.IDocument
+public interface IMongoRepository<TDocument> where TDocument : IDocument
 {
     IQueryable<TDocument> AsQueryable();
     TDocument FindOne(Expression<Func<TDocument, bool>> filterExpression);
