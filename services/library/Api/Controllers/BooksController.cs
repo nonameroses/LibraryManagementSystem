@@ -1,8 +1,11 @@
-﻿
+﻿using Domain.Entities;
+using Infrastructure.Data;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using Application.Books.Features.Commands;
 using Application.Books.Features.Queries;
+using MongoDB.Bson;
 
 namespace Api.Controllers;
 
@@ -10,6 +13,7 @@ namespace Api.Controllers;
 [Route("[controller]")]
 public class BooksController : ControllerBase
 {
+    // private readonly IMongoRepository<Book> _peopleRepository;
     private readonly IMediator _mediator;
 
     public BooksController(IMediator mediator)
@@ -17,34 +21,38 @@ public class BooksController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpPost("addCart")]
-    public async Task<IActionResult> AddCart(Book request)
+    [HttpPost("addBook")]
+    public async Task<IActionResult> AddPerson(Book request)
     {
-        var car = new CustomerCart()
+        var book = new Book()
         {
-
-        }
+            // No need to assign ID property because ID is unique auto generated value
+            Title = request.Title,
+            Author = request.Author,
+            Isbn = request.Isbn,
+            Quantity = request.Quantity
+        };
 
         await _mediator.Send(new AddBook.Command(book));
         return CreatedAtAction(nameof(GetBook), new { id = book.Id }, book);
     }
 
-    [HttpGet("getCarts")]
-    public async Task<IEnumerable<Book>> GetCarts()
+    [HttpGet("getBooks")]
+    public async Task<IEnumerable<Book>> GetBooks()
     {
         var books = await _mediator.Send(new GetBooks.Query());
 
         return books;
     }
-    [HttpGet("getCart")]
-    public async Task<Book> GetCart(string title, string author, int isbn)
+    [HttpGet("getBook")]
+    public async Task<Book> GetBook(string title, string author, int isbn)
     {
         var result = await _mediator.Send(new GetBook.Query(title,author,isbn));
 
         return result;
     }
-    [HttpPut("updateCart")]
-    public async Task<IActionResult> UpdateCart( Book request)
+    [HttpPut("updateBook")]
+    public async Task<IActionResult> UpdateBook( Book request)
     {
         //var book = await _mediator.Send(new GetBook.Query(request.Title, request.Author, request.Isbn));
 
@@ -52,8 +60,8 @@ public class BooksController : ControllerBase
 
         return NoContent();
     }
-    [HttpDelete("deleteCart")]
-    public async Task<IActionResult> DeleteCart(string title, string author, int isbn)
+    [HttpDelete("deleteBook")]
+    public async Task<IActionResult> DeleteBook(string title, string author, int isbn)
     {
         await _mediator.Send(new DeleteBook.Command( title,  author, isbn));
 

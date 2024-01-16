@@ -1,9 +1,11 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Domain.Entities;
 
 public class OrderItem
 {
-    public ObjectId ItemId { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public ObjectId Id { get; set; }
     public int Quantity { get; set; }
 }

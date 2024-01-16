@@ -1,6 +1,6 @@
-﻿using Application;
+﻿using Application.Cart.Features.Commands;
+using Application.Cart.Features.Queries;
 using Domain.Entities;
-using Infrastructure.Data;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,30 +12,53 @@ public class CartController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public CartController(IMongoRepository<Person> peopleRepository)
+    public CartController(IMediator mediator)
     {
-        _peopleRepository = peopleRepository;
+        _mediator = mediator;
     }
 
-    [HttpPost("registerPerson")]
-    public async Task AddPerson(string firstName, string lastName)
+    [HttpPost("addCart")]
+    public async Task<IActionResult> AddCart(CustomerCart request)
     {
-        var person = new Person()
+        var cart = new CustomerCart()
         {
-            FirstName = "John",
-            LastName = "Doe"
+            FirstName = request.FirstName,
+            LastName = request.LastName,
+            Orders = request.Orders
         };
 
-        await _peopleRepository.InsertOneAsync(person);
+        await _mediator.Send(new AddCart.Command(cart));
+        return CreatedAtAction(nameof(GetCart), new { id = cart.Id }, cart);
     }
 
-    [HttpGet("getPeopleData")]
-    public IEnumerable<string> GetPeopleData()
+    [HttpGet("getCarts")]
+    public async Task<IEnumerable<CustomerCart>> GetCarts()
     {
-        var people = _peopleRepository.FilterBy(
-            filter => filter.FirstName != "test",
-            projection => projection.FirstName
-        );
-        return people;
+        var books = await _mediator.Send(new GetCarts.Query());
+
+        return books;
     }
+    [HttpGet("getCart")]
+    public async Task<CustomerCart> GetCart(string firstName, string lastName)
+    {
+        var result = await _mediator.Send(new GetCart.Query(firstName, lastName));
+
+        return result;
+    }
+    //[HttpPut("updateCart")]
+    //public async Task<IActionResult> UpdateCart(Book request)
+    //{
+    //    //var book = await _mediator.Send(new GetBook.Query(request.Title, request.Author, request.Isbn));
+
+    //    var result = await _mediator.Send(new UpdateBook.Command(request));
+
+    //    return NoContent();
+    //}
+    //[HttpDelete("deleteCart")]
+    //public async Task<IActionResult> DeleteCart(string firstName, string lastName, int isbn)
+    //{
+    //    await _mediator.Send(new DeleteBook.Command(firstName, lastName, isbn));
+
+    //    return NoContent();
+    //}
 }

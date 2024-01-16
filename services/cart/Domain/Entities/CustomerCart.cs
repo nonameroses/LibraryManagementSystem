@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities;
 ////The collection name in MongoDB
-//[BsonCollection("cart")]
+[BsonCollection("cart")]
 //// Book inherits from abstract class Document
 public class CustomerCart : Document
 {

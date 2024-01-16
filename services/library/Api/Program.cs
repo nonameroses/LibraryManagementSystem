@@ -29,9 +29,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Dependency Injection
 foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
 {
-
-    //builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-    //builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assembly));
     builder.Services.AddMediatR(cfg =>
     {
         cfg.RegisterServicesFromAssemblies(assembly);

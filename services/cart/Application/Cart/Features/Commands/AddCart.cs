@@ -58,11 +58,11 @@ public class AddCart
             var entity = new CustomerCart
             {
                 FirstName = request.Cart.FirstName,
-                LastName = request.Cart.LastName,s
+                LastName = request.Cart.LastName,
                 Orders = request.Cart.Orders,
             };
 
-            await _bookRepository.InsertOneAsync(entity);
+            await _mongoRepository.InsertOneAsync(entity);
 
             return entity;
         }
