@@ -10,15 +10,14 @@ public class GetCart
 {
     public sealed class Query : IRequest<CustomerCart>
     {
-        public string Title { get; set; }
-        public string Author { get; set; }
-        public int Isbn { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public List<OrderItem> Orders { get; set; }
 
-        public Query(string title, string author, int isbn)
+        public Query(string firstName, string lastName)
         {
-            Title = title;
-            Author = author;
-            Isbn = isbn;
+            FirstName = firstName;
+            LastName = lastName;
         }
     }
 
@@ -43,9 +42,8 @@ public class GetCart
         {
             // return a single book if any of the filter matches
             var book = _mongoRepository.FindOneAsync(
-                filter => filter.Author == request.Author ||
-                          filter.Title == request.Title ||
-                          filter.Isbn == request.Isbn
+                filter => filter.FirstName == request.FirstName ||
+                          filter.LastName == request.LastName
             );
 
             return await book;

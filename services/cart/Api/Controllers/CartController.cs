@@ -1,16 +1,18 @@
-﻿using Domain.Entities;
+﻿using Application;
+using Domain.Entities;
 using Infrastructure.Data;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class SampleController : ControllerBase
+public class CartController : ControllerBase
 {
-    private readonly IMongoRepository<Person> _peopleRepository;
+    private readonly IMediator _mediator;
 
-    public SampleController(IMongoRepository<Person> peopleRepository)
+    public CartController(IMongoRepository<Person> peopleRepository)
     {
         _peopleRepository = peopleRepository;
     }

@@ -6,7 +6,7 @@ using static System.Net.Mime.MediaTypeNames;
 namespace Application.Cart.Features.Queries;
 
 //Query to get all the carts 
-public class GetBooks
+public class GetCarts
 {
     public sealed class Query : IRequest<IEnumerable<CustomerCart>>
     {

@@ -46,21 +46,20 @@ public class AddCart
 
     public class Handler : IRequestHandler<Command, CustomerCart>
     {
-        private readonly IMongoRepository<CustomerCart> _cartRepository;
+        private readonly IMongoRepository<CustomerCart> _mongoRepository;
 
-        public Handler(IMongoRepository<CustomerCart> bookRepository)
+        public Handler(IMongoRepository<CustomerCart> mongoRepository)
         {
-            _cartRepository = bookRepository;
+            _mongoRepository = mongoRepository;
         }
 
         public async Task<CustomerCart> Handle(Command request, CancellationToken cancellationToken)
         {
             var entity = new CustomerCart
             {
-                Title = request.Book.Title,
-                Author = request.Book.Author,
-                Isbn = request.Book.Isbn,
-                Quantity = request.Book.Quantity
+                FirstName = request.Cart.FirstName,
+                LastName = request.Cart.LastName,s
+                Orders = request.Cart.Orders,
             };
 
             await _bookRepository.InsertOneAsync(entity);

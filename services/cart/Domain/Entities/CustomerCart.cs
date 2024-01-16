@@ -6,6 +6,5 @@ public class CustomerCart : Document
 {
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
-    public string? Email { get; set; }
     public List<OrderItem> Orders { get; set; }
 }
