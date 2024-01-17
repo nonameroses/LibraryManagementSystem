@@ -13,7 +13,6 @@ namespace Api.Controllers;
 [Route("[controller]")]
 public class BooksController : ControllerBase
 {
-    // private readonly IMongoRepository<Book> _peopleRepository;
     private readonly IMediator _mediator;
 
     public BooksController(IMediator mediator)
@@ -22,18 +21,16 @@ public class BooksController : ControllerBase
     }
 
     [HttpPost("addBook")]
-    public async Task<IActionResult> AddPerson(Book request)
+    public async Task<IActionResult> AddBook(Book request)
     {
-        var book = new Book()
-        {
-            // No need to assign ID property because ID is unique auto generated value
-            Title = request.Title,
-            Author = request.Author,
-            Isbn = request.Isbn,
-            Quantity = request.Quantity
-        };
+        //var book = new Book()
+        //{
+        //    Title = request.Title,
+        //    Author = request.Author,
+        //    Isbn = request.Isbn
+        //};
 
-        await _mediator.Send(new AddBook.Command(book));
+        var book = await _mediator.Send(new AddBook.Command(request));
         return CreatedAtAction(nameof(GetBook), new { id = book.Id }, book);
     }
 
@@ -48,6 +45,14 @@ public class BooksController : ControllerBase
     public async Task<Book> GetBook(string title, string author, int isbn)
     {
         var result = await _mediator.Send(new GetBook.Query(title,author,isbn));
+
+        return result;
+    }
+
+    [HttpGet("getBookById")]
+    public async Task<Book> GetBookById(string id)
+    {
+        var result = await _mediator.Send(new GetBookById.Query(id));
 
         return result;
     }

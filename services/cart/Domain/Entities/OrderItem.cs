@@ -6,6 +6,6 @@ namespace Domain.Entities;
 public class OrderItem
 {
     [BsonRepresentation(BsonType.ObjectId)]
-    public ObjectId Id { get; set; }
+    public string Id { get; set; }
     public int Quantity { get; set; }
 }

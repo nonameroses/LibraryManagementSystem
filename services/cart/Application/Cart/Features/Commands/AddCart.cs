@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using FluentValidation;
 using MediatR;
+using MongoDB.Bson;
 
 namespace Application.Cart.Features.Commands;
 
@@ -57,6 +58,7 @@ public class AddCart
         {
             var entity = new CustomerCart
             {
+                Id = ObjectId.GenerateNewId().ToString(),
                 FirstName = request.Cart.FirstName,
                 LastName = request.Cart.LastName,
                 Orders = request.Cart.Orders,

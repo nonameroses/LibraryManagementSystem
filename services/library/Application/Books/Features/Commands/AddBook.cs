@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using FluentValidation;
 using MediatR;
+using MongoDB.Bson;
 
 namespace Application.Books.Features.Commands;
 
@@ -36,10 +37,10 @@ public class AddBook
                 .WithName("Isbn")
                 .WithMessage("International Standard Book Number cannot be 0!");
 
-            RuleFor(p => p.Book.Quantity)
-                .GreaterThanOrEqualTo(1)
-                .WithName("Quantity")
-                .WithMessage("Quantity must be more than 0!");
+            //RuleFor(p => p.Book.Quantity)
+            //    .GreaterThanOrEqualTo(1)
+            //    .WithName("Quantity")
+            //    .WithMessage("Quantity must be more than 0!");
 
         }
     }
@@ -57,10 +58,10 @@ public class AddBook
         {
             var entity = new Book
             {
+                Id = ObjectId.GenerateNewId().ToString(),
                 Title = request.Book.Title,
                 Author = request.Book.Author,
-                Isbn = request.Book.Isbn,
-                Quantity = request.Book.Quantity
+                Isbn = request.Book.Isbn
             };
 
             await _mongoRepository.InsertOneAsync(entity);
