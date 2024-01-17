@@ -61,7 +61,7 @@ public class AddCart
                 Id = ObjectId.GenerateNewId().ToString(),
                 FirstName = request.Cart.FirstName,
                 LastName = request.Cart.LastName,
-                Orders = request.Cart.Orders,
+                Order = request.Cart.Order,
             };
 
             await _mongoRepository.InsertOneAsync(entity);

@@ -3,13 +3,13 @@
 namespace Application;
 public class RabbitMqConfigurationSettings : IRabbitMqConfigurationSettings
 {
-    public string ExchangeName { get; set; }
-    public string direct { get; set; }
-    public string QueueName { get; set; }
-    public string RouteKey { get; set; }
-    public string RabbitURL { get; set; }
-    public string Username { get; set; }
-    public string Password { get; set; }
+    public string? ExchangeName { get; set; }
+    public string? direct { get; set; }
+    public string? QueueName { get; set; }
+    public string? RouteKey { get; set; }
+    public string? RabbitURL { get; set; }
+    public string? Username { get; set; }
+    public string? Password { get; set; }
 
     public static IConfiguration AppSetting
     {

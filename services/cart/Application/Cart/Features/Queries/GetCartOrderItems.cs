@@ -11,7 +11,7 @@ public class GetCartOrders
     {
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-        public List<OrderItem> Orders { get; set; }
+        public List<OrderItem> Order { get; set; }
 
         public Query(string firstName, string lastName)
         {
@@ -45,9 +45,9 @@ public class GetCartOrders
                           filter.LastName == request.LastName
             );
 
-            var items = cart.Orders;
+            var orderItems = cart.Order;
 
-            return items;
+            return orderItems;
         }
     }
 }

@@ -24,7 +24,7 @@ public class CartController : ControllerBase
         {
             FirstName = request.FirstName,
             LastName = request.LastName,
-            Orders = request.Orders
+            Order = request.Order
         };
 
         await _mediator.Send(new AddCart.Command(cart));
@@ -46,9 +46,9 @@ public class CartController : ControllerBase
         return result;
     }
     [HttpGet("getOrderItems")]
-    public async Task<CustomerCart> GetOrderItems(string firstName, string lastName)
+    public async Task<IEnumerable<OrderItem>> GetOrderItems(string firstName, string lastName)
     {
-        var result = await _mediator.Send(new GetCart.Query(firstName, lastName));
+        var result = await _mediator.Send(new GetCartOrders.Query(firstName, lastName));
 
         return result;
     }

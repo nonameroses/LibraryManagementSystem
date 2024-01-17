@@ -9,5 +9,5 @@ public class CustomerCart : Document
     [JsonIgnore]
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
-    public List<OrderItem> Orders { get; set; }
+    public List<OrderItem> Order { get; set; }
 }
