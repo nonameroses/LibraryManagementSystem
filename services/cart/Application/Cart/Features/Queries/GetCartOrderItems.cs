@@ -1,14 +1,13 @@
-﻿using Domain.Entities;
+﻿using Domain;
+using Domain.Entities;
 using MediatR;
-using System.Diagnostics.Metrics;
-using FluentValidation;
 
 namespace Application.Cart.Features.Queries;
 
 //Query to get a single book 
-public class GetCart
+public class GetCartOrders
 {
-    public sealed class Query : IRequest<CustomerCart>
+    public sealed class Query : IRequest<IEnumerable<OrderItem>>
     {
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
@@ -29,7 +28,7 @@ public class GetCart
     //    }
     //}
 
-    public class Handler : IRequestHandler<Query, CustomerCart>
+    public class Handler : IRequestHandler<Query, IEnumerable<OrderItem>>
     {
         private readonly IMongoRepository<CustomerCart> _mongoRepository;
 
@@ -38,16 +37,17 @@ public class GetCart
             _mongoRepository = mongoRepository;
         }
 
-        public async Task<CustomerCart> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<OrderItem>> Handle(Query request, CancellationToken cancellationToken)
         {
             // return a single book if any of the filter matches
-            var cart = _mongoRepository.FindOneAsync(
+            var cart = await _mongoRepository.FindOneAsync(
                 filter => filter.FirstName == request.FirstName ||
                           filter.LastName == request.LastName
             );
 
+            var items = cart.Orders;
 
-            return await cart;
+            return items;
         }
     }
 }

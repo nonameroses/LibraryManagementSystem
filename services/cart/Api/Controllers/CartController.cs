@@ -45,6 +45,13 @@ public class CartController : ControllerBase
 
         return result;
     }
+    [HttpGet("getOrderItems")]
+    public async Task<CustomerCart> GetOrderItems(string firstName, string lastName)
+    {
+        var result = await _mediator.Send(new GetCart.Query(firstName, lastName));
+
+        return result;
+    }
     //[HttpPut("updateCart")]
     //public async Task<IActionResult> UpdateCart(Book request)
     //{

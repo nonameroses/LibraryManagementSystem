@@ -37,7 +37,7 @@ public class BookMessageProducer : IBookMessageProducer
                 channel.QueueDeclare(_config.QueueName, false, false, false, null);
 
                 //Bind Queue with Exhange and routing details
-                channel.QueueBind(_config.QueueName, _config.ExchangeName, _config.RoutingName, null);
+                channel.QueueBind(_config.QueueName, _config.ExchangeName, _config.RouteKey, null);
 
                 //Seriliaze object using Newtonsoft library
                 string productDetail = JsonConvert.SerializeObject(book);
@@ -47,7 +47,7 @@ public class BookMessageProducer : IBookMessageProducer
                 properties.Persistent = true;
 
                 //publish msg
-                channel.BasicPublish(_config.ExchangeName, _config.RoutingName, properties,body);
+                channel.BasicPublish(_config.ExchangeName, _config.RouteKey, properties,body);
 
                 return true;
             }

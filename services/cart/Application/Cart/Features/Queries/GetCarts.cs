@@ -29,9 +29,9 @@ public class GetCarts
 
         public async Task<IEnumerable<CustomerCart>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var books = _mongoRepository.AsQueryable();
+            var carts = _mongoRepository.AsQueryable();
 
-            return books;
+            return carts;
         }
     }
 }
