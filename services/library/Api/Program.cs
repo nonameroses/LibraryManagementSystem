@@ -37,8 +37,9 @@ foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
         cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
     });
 }
-//builder.Services.Configure<RabbitMqConfigurationSettings>(builder.Configuration.GetSection("RabbitMqSettings"));
+builder.Services.Configure<RabbitMqConfigurationSettings>(builder.Configuration.GetSection("RabbitMqSettings"));
 //builder.Services.AddHostedService<RabbitMQBackgroundConsumerService>();
+builder.Services.AddScoped<IBookMessageProducer, BookMessageProducer>();
 //builder.Services.
 //AddMediatR(cf => cf.RegisterServicesFromAssembly(typeof(Program).Assembly));
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
@@ -47,7 +48,7 @@ builder.Services.AddSingleton<IMongoDbSettings>(serviceProvider =>
     serviceProvider.GetRequiredService<IOptions<MongoDbSettings>>().Value);
 
 builder.Services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
-builder.Services.AddScoped<IBookMessageProducer, BookMessageProducer>();
+
 
 
 

@@ -1,6 +1,6 @@
 ﻿using System.Text;
 using Domain.Entities;
-
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 
@@ -9,9 +9,9 @@ public class BookMessageProducer : IBookMessageProducer
 {
     private readonly RabbitMqConfigurationSettings _config;
 
-    public BookMessageProducer(RabbitMqConfigurationSettings config)
+    public BookMessageProducer(IOptions<RabbitMqConfigurationSettings> config)
     {
-        _config = config ?? throw new ArgumentNullException(nameof(config));
+        _config = config.Value;
     }
     public bool ProduceBookMessage(Book book)
     {
