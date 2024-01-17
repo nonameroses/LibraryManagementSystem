@@ -1,6 +1,8 @@
-﻿using Domain.Entities;
+﻿using Application.Producer;
+using Domain.Entities;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 using MongoDB.Bson;
 
 namespace Application.Books.Features.Commands;
@@ -48,15 +50,17 @@ public class AddBook
     public class Handler : IRequestHandler<Command, Book>
     {
         private readonly IMongoRepository<Book> _mongoRepository;
+       // private IBookMessageProducer _messageProducer;
 
         public Handler(IMongoRepository<Book> mongoRepository)
         {
             _mongoRepository = mongoRepository;
+          //  _messageProducer = messageProducer;
         }
 
         public async Task<Book> Handle(Command request, CancellationToken cancellationToken)
         {
-            var entity = new Book
+            var book = new Book
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Title = request.Book.Title,
@@ -64,9 +68,9 @@ public class AddBook
                 Isbn = request.Book.Isbn
             };
 
-            await _mongoRepository.InsertOneAsync(entity);
-
-            return entity;
+            await _mongoRepository.InsertOneAsync(book);
+           // _messageProducer.ProduceBookMessage(book);
+            return book;
         }
     }
 }

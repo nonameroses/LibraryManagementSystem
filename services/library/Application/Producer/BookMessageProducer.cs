@@ -1,14 +1,11 @@
 ﻿using System.Text;
-using Microsoft.AspNetCore.Connections;
-
-
 using Domain.Entities;
-using Infrastructure.Data;
+
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 
 namespace Application.Producer;
-public class BookMessageProducer
+public class BookMessageProducer : IBookMessageProducer
 {
     private readonly RabbitMqConfigurationSettings _config;
 
@@ -16,7 +13,7 @@ public class BookMessageProducer
     {
         _config = config ?? throw new ArgumentNullException(nameof(config));
     }
-    public bool SendProductOffer(Book book)
+    public bool ProduceBookMessage(Book book)
     {
         var RabbitMQServer = _config.RabbitURL;
         var RabbitMQUserName = _config.Username;

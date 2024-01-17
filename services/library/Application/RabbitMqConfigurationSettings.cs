@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace Infrastructure.Data;
+namespace Application;
 public class RabbitMqConfigurationSettings
 {
     public string ExchangeName { get; set; }
@@ -17,6 +17,6 @@ public class RabbitMqConfigurationSettings
     }
     static RabbitMqConfigurationSettings()
     {
-        AppSetting = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
+       // AppSetting = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
     }
 }
