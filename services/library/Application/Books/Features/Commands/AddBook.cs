@@ -50,12 +50,12 @@ public class AddBook
     public class Handler : IRequestHandler<Command, Book>
     {
         private readonly IMongoRepository<Book> _mongoRepository;
-       // private IBookMessageProducer _messageProducer;
+        private readonly IBookMessageProducer _messageProducer;
 
-        public Handler(IMongoRepository<Book> mongoRepository)
+        public Handler(IMongoRepository<Book> mongoRepository, IBookMessageProducer messageProducer)
         {
             _mongoRepository = mongoRepository;
-          //  _messageProducer = messageProducer;
+            _messageProducer = messageProducer;
         }
 
         public async Task<Book> Handle(Command request, CancellationToken cancellationToken)
@@ -69,7 +69,7 @@ public class AddBook
             };
 
             await _mongoRepository.InsertOneAsync(book);
-           // _messageProducer.ProduceBookMessage(book);
+            _messageProducer.ProduceBookMessage(book);
             return book;
         }
     }
