@@ -17,25 +17,30 @@ public class UpdateBook
 
         }
     }
+    // FluentValidation package allows easy validation for models
     public sealed class Validator : AbstractValidator<Command>
     {
         public Validator()
         {
+            // Rule for Author - not empty, max length 50 characters, only letters and spaces
             RuleFor(p => p.Book.Author)
                 .NotEmpty()
                 .MaximumLength(50)
+                .Matches(@"^[A-Za-z\s]*$").WithMessage("'Author should only contain letters.")
                 .WithName("Author")
                 .WithMessage("Author name cannot be empty!");
 
+            // Rule for Title - not empty, max length 100 characters, only letters and spaces
             RuleFor(p => p.Book.Title)
                 .NotEmpty()
-                .MaximumLength(50)
+                .MaximumLength(100)
                 .WithName("Title")
                 .WithMessage("Title name cannot be empty!");
 
+            // Rule fo Isbn - not empty, can only be a number more than 0
             RuleFor(p => p.Book.Isbn)
                 .GreaterThanOrEqualTo(1)
-                .WithName("Cost")
+                .WithName("Isbn")
                 .WithMessage("International Standard Book Number cannot be 0!");
 
             //RuleFor(p => p.Book.Quantity)
@@ -45,10 +50,13 @@ public class UpdateBook
 
         }
     }
+
+    // Handler. IRequestHandler Takes in Command as a request and returns Book as a response
     public class Handler : IRequestHandler<Command, Book>
     {
+        // Declare Mongo Repo class to use the methods
         private readonly IMongoRepository<Book> _mongoRepository;
-
+        // RabbitMq Producer class
         public Handler(IMongoRepository<Book> mongoRepository)
         {
             _mongoRepository = mongoRepository;
@@ -75,7 +83,6 @@ public class UpdateBook
             await _mongoRepository.ReplaceOneAsync(entity);
 
             return entity;
-            //return _mapper.Map<BookDto>(entity);
         }
     }
 }

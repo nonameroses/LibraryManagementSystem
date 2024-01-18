@@ -18,15 +18,6 @@ public class GetBooksById
             Ids = ids;
         }
     }
-
-    //public sealed class Validator : AbstractValidator<Query>
-    //{
-    //    public Validator()
-    //    {
-    //        RuleFor(p => p.Author).NotEmpty().WithMessage("KA NX");
-    //    }
-    //}
-
     public class Handler : IRequestHandler<Query, IEnumerable<Book>>
     {
         private readonly IMongoRepository<Book> _mongoRepository;

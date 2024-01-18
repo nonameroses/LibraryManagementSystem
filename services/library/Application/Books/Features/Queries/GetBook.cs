@@ -5,7 +5,7 @@ using FluentValidation;
 
 namespace Application.Books.Features.Queries;
 
-//Query to get a single book 
+//Query to get a single book by its title or author or isbn
 public class GetBook
 {
     public sealed class Query : IRequest<Book>
@@ -22,18 +22,13 @@ public class GetBook
         }
     }
 
-    //public sealed class Validator : AbstractValidator<Query>
-    //{
-    //    public Validator()
-    //    {
-    //        RuleFor(p => p.Author).NotEmpty().WithMessage("KA NX");
-    //    }
-    //}
-
+    // Handler. IRequestHandler Takes in Query as a request and returns Book as a response
     public class Handler : IRequestHandler<Query, Book>
     {
+        // Declare Mongo Repo class to use the methods
         private readonly IMongoRepository<Book> _mongoRepository;
 
+        // Injecting dependency into constructor
         public Handler(IMongoRepository<Book> mongoRepository)
         {
             _mongoRepository = mongoRepository;
