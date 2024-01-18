@@ -46,7 +46,7 @@ public class CartController : ControllerBase
         return result;
     }
     [HttpGet("getOrderItems")]
-    public async Task<IEnumerable<OrderItem>> GetOrderItems(string firstName, string lastName)
+    public async Task<IEnumerable<string>> GetOrderItems(string firstName, string lastName)
     {
         var result = await _mediator.Send(new GetCartOrders.Query(firstName, lastName));
 
