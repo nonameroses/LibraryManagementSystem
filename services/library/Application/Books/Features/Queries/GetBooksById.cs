@@ -31,8 +31,10 @@ public class GetBooksById
 
         public async Task<IEnumerable<Book>> Handle(Query request, CancellationToken cancellationToken)
         {
-            // return a single book if any of the filter matches
+            // Consumes the message producer from other microservice, however, the implementation
+            // is not fully finished so it does not work. Lack of time.
             var items = _consumer.ConsumeMessage();
+            // return a single book if any of the filter matches
             var book = _mongoRepository.FindMultipleByIdAsync(request.Ids);
 
 

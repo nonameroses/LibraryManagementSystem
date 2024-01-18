@@ -1,14 +1,7 @@
-﻿using Application.Producer;
-using Domain.Entities;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
 using RabbitMQ.Client.Events;
+using System.Text;
 
 namespace Application.Consumer;
 

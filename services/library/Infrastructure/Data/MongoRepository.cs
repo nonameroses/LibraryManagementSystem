@@ -1,8 +1,7 @@
-﻿using Domain.Entities;
-using System.Linq.Expressions;
+﻿using Application;
+using Domain.Entities;
 using MongoDB.Driver;
-using Application;
-using MongoDB.Bson;
+using System.Linq.Expressions;
 
 namespace Infrastructure.Data;
 
