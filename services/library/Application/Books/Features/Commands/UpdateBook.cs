@@ -1,7 +1,6 @@
 ﻿using Domain.Entities;
 using FluentValidation;
 using MediatR;
-using MongoDB.Bson;
 
 namespace Application.Books.Features.Commands;
 public class UpdateBook
@@ -34,6 +33,7 @@ public class UpdateBook
             RuleFor(p => p.Book.Title)
                 .NotEmpty()
                 .MaximumLength(100)
+                .Matches(@"^[A-Za-z\s]*$").WithMessage("'Title should only contain letters.")
                 .WithName("Title")
                 .WithMessage("Title name cannot be empty!");
 

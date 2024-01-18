@@ -31,14 +31,15 @@ public class AddBook
             RuleFor(p => p.Book.Author)
                 .NotEmpty()
                 .MaximumLength(50)
-                .Matches(@"^[A-Za-z\s]*$").WithMessage("'Author should only contain letters.")
+                .Matches(@"^[A-Za-z0-9\s\-_,\.;:()]+$").WithMessage("'Author should only contain letters.")
                 .WithName("Author")
                 .WithMessage("Author name cannot be empty!");
 
-            // Rule for Title - not empty, max length 100 characters, only letters and spaces
+            // Rule for Title - not empty, max length 100 characters, only letters spaces and numbers
             RuleFor(p => p.Book.Title)
                 .NotEmpty()
                 .MaximumLength(100)
+                .Matches(@"^[a-zA-Z0-9]*$").WithMessage("'Title should only contain letters.")
                 .WithName("Title")
                 .WithMessage("Title name cannot be empty!");
 

@@ -1,11 +1,8 @@
-﻿using Domain.Entities;
-using Infrastructure.Data;
+﻿using Application.Books.Features.Commands;
+using Application.Books.Features.Queries;
+using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using Application.Books.Features.Commands;
-using Application.Books.Features.Queries;
-using MongoDB.Bson;
 
 namespace Api.Controllers;
 
@@ -23,14 +20,8 @@ public class BooksController : ControllerBase
     [HttpPost("addBook")]
     public async Task<IActionResult> AddBook(Book request)
     {
-        //var book = new Book()
-        //{
-        //    Title = request.Title,
-        //    Author = request.Author,
-        //    Isbn = request.Isbn
-        //};
-
         var book = await _mediator.Send(new AddBook.Command(request));
+
         return CreatedAtAction(nameof(GetBook), new { id = book.Id }, book);
     }
 
@@ -44,7 +35,7 @@ public class BooksController : ControllerBase
     [HttpGet("getBook")]
     public async Task<Book> GetBook(string title, string author, int isbn)
     {
-        var result = await _mediator.Send(new GetBook.Query(title,author,isbn));
+        var result = await _mediator.Send(new GetBook.Query(title, author, isbn));
 
         return result;
     }
@@ -57,7 +48,7 @@ public class BooksController : ControllerBase
         return result;
     }
 
-    [HttpPost("getBooksByIds")]
+    [HttpGet("getBooksByIds")]
     public async Task<IEnumerable<Book>> GetBooksByIds([FromQuery] List<string> id)
     {
         var result = await _mediator.Send(new GetBooksById.Query(id));
@@ -65,7 +56,7 @@ public class BooksController : ControllerBase
         return result;
     }
     [HttpPut("updateBook")]
-    public async Task<IActionResult> UpdateBook( Book request)
+    public async Task<IActionResult> UpdateBook(Book request)
     {
         //var book = await _mediator.Send(new GetBook.Query(request.Title, request.Author, request.Isbn));
 
@@ -76,7 +67,7 @@ public class BooksController : ControllerBase
     [HttpDelete("deleteBook")]
     public async Task<IActionResult> DeleteBook(string title, string author, int isbn)
     {
-        await _mediator.Send(new DeleteBook.Command( title,  author, isbn));
+        await _mediator.Send(new DeleteBook.Command(title, author, isbn));
 
         return NoContent();
     }

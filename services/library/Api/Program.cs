@@ -1,18 +1,12 @@
 using Application;
-using Application.Books.Features.Queries;
+using Application.Books.Features.Commands;
+using Application.Common.Behaviours;
+using Application.Consumer;
+using Application.Producer;
 using FluentValidation;
 using Infrastructure.Data;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using FluentValidation.AspNetCore;
-using Application.Books.Features.Commands;
-using Microsoft.Extensions.DependencyInjection;
-using Application.Common.Behaviours;
 using MediatR;
-using System.Reflection;
-using Microsoft.AspNetCore.Hosting;
-using Application.Producer;
-using Application.Consumer;
+using Microsoft.Extensions.Options;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -65,7 +59,6 @@ builder.Services.AddValidatorsFromAssemblyContaining<AddBook.Validator>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
