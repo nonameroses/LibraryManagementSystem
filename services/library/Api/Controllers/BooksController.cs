@@ -56,6 +56,14 @@ public class BooksController : ControllerBase
 
         return result;
     }
+
+    [HttpPost("getBooksByIds")]
+    public async Task<IEnumerable<Book>> GetBooksByIds([FromQuery] List<string> id)
+    {
+        var result = await _mediator.Send(new GetBooksById.Query(id));
+
+        return result;
+    }
     [HttpPut("updateBook")]
     public async Task<IActionResult> UpdateBook( Book request)
     {

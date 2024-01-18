@@ -9,6 +9,7 @@ public interface IMongoRepository<TDocument> where TDocument : IDocument
     TDocument FindOne(Expression<Func<TDocument, bool>> filterExpression);
 
     Task<TDocument> FindOneAsync(Expression<Func<TDocument, bool>> filterExpression);
+    IQueryable<TDocument> FindMultipleByIdAsync(IEnumerable<string> id);
 
     Task InsertOneAsync(TDocument document);
 

@@ -1,23 +1,33 @@
-﻿using System.Text;
+﻿using Application.Producer;
 using Domain.Entities;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using RabbitMQ.Client;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using RabbitMQ.Client.Events;
 
-namespace Application.Producer;
-public class OrderItemsMessageProducer : IOrderItemsMessageProducer
+namespace Application.Consumer;
+
+public class RabbitMqConsumerService : IRabbitMqConsumerService
 {
     private readonly RabbitMqConfigurationSettings _config;
 
-    public OrderItemsMessageProducer(IOptions<RabbitMqConfigurationSettings> config)
+    public RabbitMqConsumerService(IOptions<RabbitMqConfigurationSettings> config)
     {
         _config = config.Value;
     }
-    public bool ProduceItemsMessage(IEnumerable<string> items)
+
+    public string ConsumeMessage()
     {
         var RabbitMQServer = _config.RabbitURL;
         var RabbitMQUserName = _config.Username;
         var RabbutMQPassword = _config.Password;
+
+        var message = "";
 
         try
         {
@@ -38,24 +48,38 @@ public class OrderItemsMessageProducer : IOrderItemsMessageProducer
 
                 //Bind Queue with Exhange and routing details
                 channel.QueueBind(_config.QueueName, _config.ExchangeName, _config.RouteKey, null);
+                // Consume only 1 message at time
+                channel.BasicQos(0, 1, false);
 
-                //Seriliaze object using Newtonsoft library
-                string productDetail = JsonConvert.SerializeObject(items);
-                var body = Encoding.UTF8.GetBytes(productDetail);
 
-                var properties = channel.CreateBasicProperties();
-                properties.Persistent = true;
 
-                //publish msg
-                channel.BasicPublish(_config.ExchangeName, _config.RouteKey, properties, body);
+                var consumer = new EventingBasicConsumer(channel);
 
-                return true;
+                // Seriliaze object using Newtonsoft library
+                consumer.Received += (sender, args) =>
+                {
+                    var body = args.Body.ToArray();
+
+                    message = Encoding.UTF8.GetString(body);
+
+                    Console.WriteLine($"Message Received: {message}");
+                    channel.BasicAck(args.DeliveryTag, false);
+                };
+
+                string consumerTag = channel.BasicConsume(_config.QueueName, false, consumer);
+
+                channel.BasicCancel(consumerTag);
+                channel.Close();
+                connection.Close();
+
+                return message;
             }
         }
 
         catch (Exception)
         {
         }
-        return false;
+
+        return message;
     }
 }

@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using Application.Producer;
+using Domain;
 using Domain.Entities;
 using MediatR;
 
@@ -31,10 +32,12 @@ public class GetCartOrders
     public class Handler : IRequestHandler<Query, IEnumerable<string>>
     {
         private readonly IMongoRepository<CustomerCart> _mongoRepository;
+        private readonly IOrderItemsMessageProducer _producer;
 
-        public Handler(IMongoRepository<CustomerCart> mongoRepository)
+        public Handler(IMongoRepository<CustomerCart> mongoRepository, IOrderItemsMessageProducer producer)
         {
             _mongoRepository = mongoRepository;
+            _producer = producer;
         }
 
         public async Task<IEnumerable<string>> Handle(Query request, CancellationToken cancellationToken)
@@ -47,6 +50,8 @@ public class GetCartOrders
 
             //Only get the list of ID's, do not take the Quantity
             var orderItems = cart.Order.Select(x => x.Id);
+            // Produce orderItems message
+            _producer.ProduceItemsMessage(orderItems);
             // Return ID's
             return orderItems;
         }

@@ -5,22 +5,22 @@ using RabbitMQ.Client.Events;
 using System.Text;
 
 namespace Application.Producer;
-    public class RabbitMQBackgroundConsumerService : BackgroundService
+    public class RabbitMqBackgroundConsumerService : BackgroundService
     {
         private IConnection _connection;
         private IModel _channel;
         private IServiceScopeFactory serviceScopeFactory;
 
-        public RabbitMQBackgroundConsumerService(IServiceScopeFactory _serviceScopeFactory)
+        public RabbitMqBackgroundConsumerService(IServiceScopeFactory _serviceScopeFactory)
         {
             serviceScopeFactory = _serviceScopeFactory;
-            InitRabbitMQ();
+            InitRabbitMq();
         }
 
-        private void InitRabbitMQ()
+        private void InitRabbitMq()
         {
             
-            _connection.ConnectionShutdown += RabbitMQ_ConnectionShutdown;
+            _connection.ConnectionShutdown += RabbitMq_ConnectionShutdown;
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -63,7 +63,7 @@ namespace Application.Producer;
         private void OnConsumerUnregistered(object sender, ConsumerEventArgs e) { }
         private void OnConsumerRegistered(object sender, ConsumerEventArgs e) { }
         private void OnConsumerShutdown(object sender, ShutdownEventArgs e) { }
-        private void RabbitMQ_ConnectionShutdown(object sender, ShutdownEventArgs e) { }
+        private void RabbitMq_ConnectionShutdown(object sender, ShutdownEventArgs e) { }
 
         public override void Dispose()
         {

@@ -12,6 +12,7 @@ using MediatR;
 using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
 using Application.Producer;
+using Application.Consumer;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -40,6 +41,7 @@ foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
 
 //builder.Services.AddHostedService<RabbitMQBackgroundConsumerService>();
 builder.Services.AddScoped<IBookMessageProducer, BookMessageProducer>();
+builder.Services.AddScoped<IRabbitMqConsumerService, RabbitMqConsumerService>();
 //builder.Services.
 //AddMediatR(cf => cf.RegisterServicesFromAssembly(typeof(Program).Assembly));
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));

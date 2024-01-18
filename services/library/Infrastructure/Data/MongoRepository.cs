@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using MongoDB.Driver;
 using Application;
+using MongoDB.Bson;
 
 namespace Infrastructure.Data;
 
@@ -37,6 +38,21 @@ public class MongoRepository<TDocument> : IMongoRepository<TDocument>
     public virtual Task<TDocument> FindOneAsync(Expression<Func<TDocument, bool>> filterExpression)
     {
         return Task.Run(() => _collection.Find(filterExpression).FirstOrDefaultAsync());
+    }
+
+    //public async Task<IEnumerable<string>> FindByIdAsync(IEnumerable<string> id)
+    //{
+    //    //_collection.AsQueryable().Where(x => x.Id.Contains(id)).ToList();
+    //    var result =  _collection.AsQueryable().Where(x => id.Contains(x.Id)).ToList();
+    //    //return Task.Run(() => _collection.AsQueryable().Where(x => id.Contains(x.Id)));
+    //    return  result.AsEnumerable();
+    //    // return Task.Run(() => _collection.FindAsync(o => o.An))
+    //}
+
+    public virtual IQueryable<TDocument> FindMultipleByIdAsync(IEnumerable<string> id)
+    {
+        var result = _collection.AsQueryable().Where(x => id.Contains(x.Id)).ToList();
+        return result.AsQueryable();
     }
 
     public virtual Task InsertOneAsync(TDocument document)
