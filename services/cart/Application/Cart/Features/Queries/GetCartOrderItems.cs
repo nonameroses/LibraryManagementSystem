@@ -45,7 +45,7 @@ public class GetCartOrders
                           filter.LastName == request.LastName
             );
 
-            var orderItems = cart.Order;
+            var orderItems = cart.Order.Select(x => x.Id);
 
             return orderItems;
         }
