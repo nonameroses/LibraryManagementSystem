@@ -10,8 +10,10 @@ namespace Api.Controllers;
 [Route("[controller]")]
 public class BooksController : ControllerBase
 {
+    //  Using the MediatR package interface
     private readonly IMediator _mediator;
 
+    // Injecting dependency in the constructor
     public BooksController(IMediator mediator)
     {
         _mediator = mediator;
@@ -20,8 +22,9 @@ public class BooksController : ControllerBase
     [HttpPost("addBook")]
     public async Task<IActionResult> AddBook(Book request)
     {
+        // Send comman through Mediator and assign the result into a variable
+        // to be able to display in the response body
         var book = await _mediator.Send(new AddBook.Command(request));
-
         return CreatedAtAction(nameof(GetBook), new { id = book.Id }, book);
     }
 
@@ -58,7 +61,6 @@ public class BooksController : ControllerBase
     [HttpPut("updateBook")]
     public async Task<IActionResult> UpdateBook(Book request)
     {
-        //var book = await _mediator.Send(new GetBook.Query(request.Title, request.Author, request.Isbn));
 
         var result = await _mediator.Send(new UpdateBook.Command(request));
 

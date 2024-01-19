@@ -20,27 +20,29 @@ public class AddCart
     {
         public Validator()
         {
-            RuleFor(p => p.Cartt.FirstName)
+
+
+            // Rule for FirstName - not empty, max length 50 characters, only letters and spaces
+            RuleFor(p => p.Cart.FirstName)
                 .NotEmpty()
                 .MaximumLength(50)
+                .Matches(@"^[a-zA-Z\s]*$").WithMessage("'FirstName should only contain letters.")
                 .WithName("FirstName")
-                .WithMessage("FirstName name cannot be empty!");
+                .WithMessage("FirstName name cannot be empty and can only contain letters!");
 
-            RuleFor(p => p.Cartt.LastName)
+            // Rule for LastName - not empty, max length 100 characters, only letters spaces and numbers
+            RuleFor(p => p.Cart.LastName)
                 .NotEmpty()
-                .MaximumLength(50)
-                .WithName("Title")
-                .WithMessage("Title name cannot be empty!");
+                .MaximumLength(100)
+                .Matches(@"^[a-zA-Z\s]*$").WithMessage("'LastName should only contain letters.")
+                .WithName("LastName")
+                .WithMessage("LastName name cannot be empty and can only contain letters!");
 
-            RuleFor(p => p.Cartt.Email)
-                .GreaterThanOrEqualTo(1)
-                .WithName("Isbn")
-                .WithMessage("International Standard Book Number cannot be 0!");
-
-            RuleFor(p => p.Cartt.Quantity)
+            // Rule fo Quantity - not empty, can only be a number more than 0
+            RuleFor(p => p.Cart.Order[0].Quantity)
                 .GreaterThanOrEqualTo(1)
                 .WithName("Quantity")
-                .WithMessage("Quantity must be more than 0!");
+                .WithMessage("Quantity Number cannot be 0 or less!");
 
         }
     }

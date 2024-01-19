@@ -26,11 +26,12 @@ public class AddBook
         {
             // No need to validate the ID because it is auto generated with MongoDB
 
+
             // Rule for Author - not empty, max length 50 characters, only letters and spaces
             RuleFor(p => p.Book.Author)
                 .NotEmpty()
                 .MaximumLength(50)
-                .Matches(@"^[A-Za-z0-9\s\-_,\.;:()]+$").WithMessage("'Author should only contain letters.")
+                .Matches(@"^[a-zA-Z\s]*$").WithMessage("'Author should only contain letters.")
                 .WithName("Author")
                 .WithMessage("Author name cannot be empty!");
 
@@ -47,11 +48,6 @@ public class AddBook
                 .GreaterThanOrEqualTo(1)
                 .WithName("Isbn")
                 .WithMessage("International Standard Book Number cannot be 0!");
-
-            //RuleFor(p => p.Book.Quantity)
-            //    .GreaterThanOrEqualTo(1)
-            //    .WithName("Quantity")
-            //    .WithMessage("Quantity must be more than 0!");
 
         }
     }

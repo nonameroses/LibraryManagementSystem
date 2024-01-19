@@ -48,8 +48,6 @@ public class CartController : ControllerBase
     [HttpPut("updateCart")]
     public async Task<IActionResult> UpdateCart(CustomerCart request)
     {
-        //var book = await _mediator.Send(new GetBook.Query(request.Title, request.Author, request.Isbn));
-
         var result = await _mediator.Send(new UpdateCart.Command(request));
 
         return Ok(result);
