@@ -43,11 +43,6 @@ public class UpdateBook
                 .WithName("Isbn")
                 .WithMessage("International Standard Book Number cannot be 0!");
 
-            //RuleFor(p => p.Book.Quantity)
-            //    .GreaterThanOrEqualTo(1)
-            //    .WithName("Quantity")
-            //    .WithMessage("Quantity must be more than 0!");
-
         }
     }
 

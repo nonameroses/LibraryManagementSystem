@@ -15,20 +15,16 @@ public class RabbitMqConfigurationSettings : IRabbitMqConfigurationSettings
     {
         get;
     }
-    static RabbitMqConfigurationSettings()
-    {
-       // AppSetting = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
-    }
 }
 
 public interface IRabbitMqConfigurationSettings
 {
-     string ExchangeName { get; set; }
-     string direct { get; set; }
-     string QueueName { get; set; }
-     string RouteKey { get; set; }
-     string RabbitURL { get; set; }
-     string Username { get; set; }
-     string Password { get; set; }
+    string ExchangeName { get; set; }
+    string direct { get; set; }
+    string QueueName { get; set; }
+    string RouteKey { get; set; }
+    string RabbitURL { get; set; }
+    string Username { get; set; }
+    string Password { get; set; }
 
 }

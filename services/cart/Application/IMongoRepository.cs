@@ -1,6 +1,5 @@
-﻿using System.Linq.Expressions;
-using Domain;
-using Domain.Entities;
+﻿using Domain.Entities;
+using System.Linq.Expressions;
 
 namespace Application;
 

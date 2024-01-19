@@ -39,15 +39,6 @@ public class MongoRepository<TDocument> : IMongoRepository<TDocument>
         return Task.Run(() => _collection.Find(filterExpression).FirstOrDefaultAsync());
     }
 
-    //public async Task<IEnumerable<string>> FindByIdAsync(IEnumerable<string> id)
-    //{
-    //    //_collection.AsQueryable().Where(x => x.Id.Contains(id)).ToList();
-    //    var result =  _collection.AsQueryable().Where(x => id.Contains(x.Id)).ToList();
-    //    //return Task.Run(() => _collection.AsQueryable().Where(x => id.Contains(x.Id)));
-    //    return  result.AsEnumerable();
-    //    // return Task.Run(() => _collection.FindAsync(o => o.An))
-    //}
-
     public virtual IQueryable<TDocument> FindMultipleByIdAsync(IEnumerable<string> id)
     {
         var result = _collection.AsQueryable().Where(x => id.Contains(x.Id)).ToList();
@@ -62,7 +53,6 @@ public class MongoRepository<TDocument> : IMongoRepository<TDocument>
     public virtual async Task ReplaceOneAsync(TDocument document)
     {
         var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, document.Id);
-        //await _collection.FindOneAndReplaceAsync(filter, document);
         await _collection.ReplaceOneAsync(
             doc => doc.Id == document.Id,
             document);
