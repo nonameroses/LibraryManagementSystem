@@ -62,7 +62,7 @@ public class BooksController : ControllerBase
 
         var result = await _mediator.Send(new UpdateBook.Command(request));
 
-        return NoContent();
+        return Ok(result);
     }
     [HttpDelete("deleteBook")]
     public async Task<IActionResult> DeleteBook(string title, string author, int isbn)

@@ -20,27 +20,27 @@ public class AddCart
     {
         public Validator()
         {
-        //    RuleFor(p => p.Cartt.FirstName)
-        //        .NotEmpty()
-        //        .MaximumLength(50)
-        //        .WithName("FirstName")
-        //        .WithMessage("FirstName name cannot be empty!");
+            RuleFor(p => p.Cartt.FirstName)
+                .NotEmpty()
+                .MaximumLength(50)
+                .WithName("FirstName")
+                .WithMessage("FirstName name cannot be empty!");
 
-        //    RuleFor(p => p.Cartt.LastName)
-        //        .NotEmpty()
-        //        .MaximumLength(50)
-        //        .WithName("Title")
-        //        .WithMessage("Title name cannot be empty!");
+            RuleFor(p => p.Cartt.LastName)
+                .NotEmpty()
+                .MaximumLength(50)
+                .WithName("Title")
+                .WithMessage("Title name cannot be empty!");
 
-        //    RuleFor(p => p.Cartt.Email)
-        //        .GreaterThanOrEqualTo(1)
-        //        .WithName("Isbn")
-        //        .WithMessage("International Standard Book Number cannot be 0!");
+            RuleFor(p => p.Cartt.Email)
+                .GreaterThanOrEqualTo(1)
+                .WithName("Isbn")
+                .WithMessage("International Standard Book Number cannot be 0!");
 
-        //    RuleFor(p => p.Cartt.Quantity)
-        //        .GreaterThanOrEqualTo(1)
-        //        .WithName("Quantity")
-        //        .WithMessage("Quantity must be more than 0!");
+            RuleFor(p => p.Cartt.Quantity)
+                .GreaterThanOrEqualTo(1)
+                .WithName("Quantity")
+                .WithMessage("Quantity must be more than 0!");
 
         }
     }

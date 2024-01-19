@@ -20,14 +20,7 @@ public class CartController : ControllerBase
     [HttpPost("addCart")]
     public async Task<IActionResult> AddCart(CustomerCart request)
     {
-        var cart = new CustomerCart()
-        {
-            FirstName = request.FirstName,
-            LastName = request.LastName,
-            Order = request.Order
-        };
-
-        await _mediator.Send(new AddCart.Command(cart));
+        var cart = await _mediator.Send(new AddCart.Command(request));
         return CreatedAtAction(nameof(GetCart), new { id = cart.Id }, cart);
     }
 
@@ -52,20 +45,20 @@ public class CartController : ControllerBase
 
         return result;
     }
-    //[HttpPut("updateCart")]
-    //public async Task<IActionResult> UpdateCart(Book request)
-    //{
-    //    //var book = await _mediator.Send(new GetBook.Query(request.Title, request.Author, request.Isbn));
+    [HttpPut("updateCart")]
+    public async Task<IActionResult> UpdateCart(CustomerCart request)
+    {
+        //var book = await _mediator.Send(new GetBook.Query(request.Title, request.Author, request.Isbn));
 
-    //    var result = await _mediator.Send(new UpdateBook.Command(request));
+        var result = await _mediator.Send(new UpdateCart.Command(request));
 
-    //    return NoContent();
-    //}
-    //[HttpDelete("deleteCart")]
-    //public async Task<IActionResult> DeleteCart(string firstName, string lastName, int isbn)
-    //{
-    //    await _mediator.Send(new DeleteBook.Command(firstName, lastName, isbn));
+        return Ok(result);
+    }
+    [HttpDelete("deleteCart")]
+    public async Task<IActionResult> DeleteCart(string id)
+    {
+        await _mediator.Send(new DeleteCart.Command(id));
 
-    //    return NoContent();
-    //}
+        return NoContent();
+    }
 }

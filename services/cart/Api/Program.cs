@@ -1,9 +1,6 @@
 using Application;
 using Application.Producer;
-using FluentValidation;
 using Infrastructure.Data;
-using MediatR;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);

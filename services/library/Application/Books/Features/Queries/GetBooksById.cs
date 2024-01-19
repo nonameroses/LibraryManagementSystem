@@ -1,8 +1,6 @@
-﻿using Domain.Entities;
+﻿using Application.Consumer;
+using Domain.Entities;
 using MediatR;
-using System.Diagnostics.Metrics;
-using Application.Consumer;
-using FluentValidation;
 
 namespace Application.Books.Features.Queries;
 
@@ -31,12 +29,11 @@ public class GetBooksById
 
         public async Task<IEnumerable<Book>> Handle(Query request, CancellationToken cancellationToken)
         {
-            // Consumes the message producer from other microservice, however, the implementation
-            // is not fully finished so it does not work. Lack of time.
+            // Consumes the message produced from other microservice, however, the implementation
+            // is not fully finished.
             var items = _consumer.ConsumeMessage();
-            // return a single book if any of the filter matches
+            // returns a list of books matching the Id's
             var book = _mongoRepository.FindMultipleByIdAsync(request.Ids);
-
 
             return book;
         }

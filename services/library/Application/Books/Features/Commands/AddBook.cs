@@ -26,7 +26,6 @@ public class AddBook
         {
             // No need to validate the ID because it is auto generated with MongoDB
 
-
             // Rule for Author - not empty, max length 50 characters, only letters and spaces
             RuleFor(p => p.Book.Author)
                 .NotEmpty()
@@ -39,7 +38,7 @@ public class AddBook
             RuleFor(p => p.Book.Title)
                 .NotEmpty()
                 .MaximumLength(100)
-                .Matches(@"^[a-zA-Z0-9]*$").WithMessage("'Title should only contain letters.")
+                .Matches(@"^[A-Za-z0-9\s\-_,\.;:()]+$").WithMessage("'Title should only contain letters.")
                 .WithName("Title")
                 .WithMessage("Title name cannot be empty!");
 

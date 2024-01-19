@@ -1,7 +1,5 @@
 ﻿using Domain.Entities;
 using MediatR;
-using System.Diagnostics.Metrics;
-using FluentValidation;
 
 namespace Application.Books.Features.Queries;
 
